@@ -7,7 +7,7 @@ const AuthContext = React.createContext({
   userRole: null,
   login: (token, userRole, userData, exp) => {},
   logout: () => {},
-  baseURL: '',
+  baseURL: 'http://localhost:8080',
   setBaseURL: (url) => {},
 });
 
