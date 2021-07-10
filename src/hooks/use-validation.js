@@ -1,8 +1,4 @@
-import { useState } from 'react';
-
 const useValidation = (fieldsObj, setFieldsObj) => {
-  const [fields, setFields] = useState(fieldsObj);
-
   const handleOnChange = (event, index) => {
     if (Array.isArray(fieldsObj)) {
       setFieldsObj((prevState) => {
@@ -107,7 +103,7 @@ const useValidation = (fieldsObj, setFieldsObj) => {
           },
         }));
       }
-      if (fields[event.target.name].type === 'numerical') {
+      if (fieldsObj[event.target.name].type === 'numerical') {
         if (isNaN(event.target.value)) {
           setFieldsObj((prevState) => ({
             ...prevState,
@@ -121,97 +117,6 @@ const useValidation = (fieldsObj, setFieldsObj) => {
       }
     }
   };
-
-  // const handleOnChange = (event) => {
-  //   setFields((prevState) => ({
-  //     ...prevState,
-  //     [event.target.name]: {
-  //       ...prevState[event.target.name],
-  //       value: event.target.value,
-  //     },
-  //   }));
-  //   if (event.target.value !== '') {
-  //     setFields((prevState) => ({
-  //       ...prevState,
-  //       [event.target.name]: {
-  //         ...prevState[event.target.name],
-  //         error: false,
-  //         helper: '',
-  //       },
-  //     }));
-  //   }
-  // };
-
-  // const handleValidation = (event) => {
-  //   if (event.target.value === '') {
-  //     setFields((prevState) => ({
-  //       ...prevState,
-  //       [event.target.name]: {
-  //         ...prevState[event.target.name],
-  //         error: true,
-  //         helper: 'Enter a value!',
-  //       },
-  //     }));
-  //   }
-  //   if (fields[event.target.name].type === 'numerical') {
-  //     if (isNaN(event.target.value)) {
-  //       setFields((prevState) => ({
-  //         ...prevState,
-  //         [event.target.name]: {
-  //           ...prevState[event.target.name],
-  //           error: true,
-  //           helper: 'Enter a Number!',
-  //         },
-  //       }));
-  //     }
-  //   }
-  // };
-
-  // MAIN PART
-  // const handleOnChange = (event) => {
-  //   setFieldsObj((prevState) => ({
-  //     ...prevState,
-  //     [event.target.name]: {
-  //       ...prevState[event.target.name],
-  //       value: event.target.value,
-  //     },
-  //   }));
-  //   if (event.target.value !== '') {
-  //     setFieldsObj((prevState) => ({
-  //       ...prevState,
-  //       [event.target.name]: {
-  //         ...prevState[event.target.name],
-  //         error: false,
-  //         helper: '',
-  //       },
-  //     }));
-  //   }
-  // };
-
-  // const handleValidation = (event) => {
-  //   if (event.target.value === '') {
-  //     setFieldsObj((prevState) => ({
-  //       ...prevState,
-  //       [event.target.name]: {
-  //         ...prevState[event.target.name],
-  //         error: true,
-  //         helper: 'Enter a value!',
-  //       },
-  //     }));
-  //   }
-  //   if (fields[event.target.name].type === 'numerical') {
-  //     if (isNaN(event.target.value)) {
-  //       setFieldsObj((prevState) => ({
-  //         ...prevState,
-  //         [event.target.name]: {
-  //           ...prevState[event.target.name],
-  //           error: true,
-  //           helper: 'Enter a Number!',
-  //         },
-  //       }));
-  //     }
-  //   }
-  // };
 
   return { handleOnChange, handleValidation };
 };

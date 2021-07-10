@@ -96,7 +96,7 @@ const SignInForm = () => {
     event.preventDefault();
 
     if (validation.password.value !== '' && validation.userName.value !== '') {
-      fetch(`${authCtx.baseURL}/api/auth/login`, {
+      fetch(`${authCtx.baseURL}/api/Auth/Login`, {
         method: 'POST',
         body: JSON.stringify({
           code: validation.userName.value,
@@ -110,9 +110,7 @@ const SignInForm = () => {
         .then((resData) => {
           const data = resData.data;
           if (data != null) {
-            console.log(data);
             authCtx.login(data.token, data.user.role, data.user, data.expireAt);
-            console.log(authCtx);
             history.replace('/dashboard');
           } else {
             console.log(resData.message);

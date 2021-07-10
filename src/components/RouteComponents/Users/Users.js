@@ -127,14 +127,13 @@ const Users = () => {
     if (!tableShow) {
       handleGetUsers();
     } else if (tableShow && reload) {
-      console.log(tableShow, reload);
       handleGetUsers();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reload, fields]);
 
   const handleGetUsers = () => {
-    fetch(`${authCtx.baseURL}/api/users`, {
+    fetch(`${authCtx.baseURL}/api/Users`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authCtx.token}`,
@@ -160,7 +159,7 @@ const Users = () => {
   };
 
   const handleDeleteClicked = (id) => {
-    fetch(`${authCtx.baseURL}/api/users/${id}`, {
+    fetch(`${authCtx.baseURL}/api/Users/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -182,7 +181,7 @@ const Users = () => {
   const handleUpdateClicked = (itemId, fields) => {
     const { id, ...rest } = fields;
     if (Object.values(rest).every((item) => item.value !== '')) {
-      fetch(`${authCtx.baseURL}/api/users/${itemId}`, {
+      fetch(`${authCtx.baseURL}/api/Users/${itemId}`, {
         method: 'PUT',
         body: JSON.stringify({
           firstName: fields.firstName.value,
@@ -198,7 +197,6 @@ const Users = () => {
       })
         .then((res) => res.json())
         .then((resData) => {
-          console.log(itemId, resData);
           if (resData.status === 'success') {
             setResMessage('Successfully Updated!');
             setReload(true);
@@ -214,7 +212,7 @@ const Users = () => {
   const handleAddClicked = (fields) => {
     const { id, ...rest } = fields;
     if (Object.values(rest).every((item) => item.value !== '')) {
-      fetch(`${authCtx.baseURL}/api/users`, {
+      fetch(`${authCtx.baseURL}/api/Users`, {
         method: 'POST',
         body: JSON.stringify({
           lastName: fields.lastName.value,
@@ -242,7 +240,7 @@ const Users = () => {
   };
 
   const handleAddGroupClicked = (fields) => {
-    fetch(`${authCtx.baseURL}/api/users/addlist`, {
+    fetch(`${authCtx.baseURL}/api/Users/AddList`, {
       method: 'POST',
       body: JSON.stringify(
         fields.map((item) => ({
@@ -260,7 +258,6 @@ const Users = () => {
     })
       .then((res) => res.json())
       .then((resData) => {
-        console.log(resData);
         if (resData.status === 'success') {
           setResMessage('Successfully Added!');
           setGroupFields([INIT_BODY]);
@@ -273,8 +270,7 @@ const Users = () => {
   };
 
   const handleById = (id) => {
-    console.log(id);
-    fetch(`${authCtx.baseURL}/api/users/${id}`, {
+    fetch(`${authCtx.baseURL}/api/Users/${id}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authCtx.token}`,

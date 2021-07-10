@@ -33,7 +33,7 @@ const TodayClassList = () => {
   const [open, setOpen] = React.useState(true);
   const [showList, setShowList] = React.useState(false);
 
-  fetch(`${authCtx.baseURL}/api/courses/todaycourses`, {
+  fetch(`${authCtx.baseURL}/api/Courses/TodayCourses`, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${authCtx.token}`,
@@ -41,7 +41,6 @@ const TodayClassList = () => {
   })
     .then((res) => res.json())
     .then((resData) => {
-      console.log(resData);
       if (resData.data != null && resData.data.length !== 0) {
         response = resData.data;
         setShowList(true);

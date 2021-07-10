@@ -95,7 +95,7 @@ const TimeTable = () => {
   }, [reload]);
 
   const handleGetTimeTables = () => {
-    fetch(`${authCtx.baseURL}/api/timetables`, {
+    fetch(`${authCtx.baseURL}/api/TimeTables`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authCtx.token}`,
@@ -103,7 +103,6 @@ const TimeTable = () => {
     })
       .then((res) => res.json())
       .then((resData) => {
-        console.log(resData);
         if (resData != null) {
           response = resData.data.list;
           pageData = {
@@ -121,12 +120,8 @@ const TimeTable = () => {
       });
   };
 
-  const handleDeleteClicked = (id) => {};
-  const handleUpdateClicked = (id, fields) => {};
-  const handleAddClicked = (fields) => {};
-
   const handleById = (id) => {
-    fetch(`${authCtx.baseURL}/api/timetables/${id}`, {
+    fetch(`${authCtx.baseURL}/api/TimeTables/${id}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authCtx.token}`,
@@ -152,7 +147,7 @@ const TimeTable = () => {
   };
 
   const handleProcessing = () => {
-    fetch(`${authCtx.baseURL}/api/timetables/startprocess`, {
+    fetch(`${authCtx.baseURL}/api/TimeTables/StartProcess`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -173,7 +168,7 @@ const TimeTable = () => {
   };
   const handleChooseById = () => {
     if (timeTableId !== '') {
-      fetch(`${authCtx.baseURL}/api/timetables/${timeTableId}/choose`, {
+      fetch(`${authCtx.baseURL}/api/TimeTables/${timeTableId}/Choose`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -198,9 +193,15 @@ const TimeTable = () => {
     <Fragment>
       <div className={classes.container}>
         <div style={{ marginBottom: '1rem', width: '90%' }}>
-          <Card style={{ padding: '.4rem', alignItems: 'center' }}>
+          <Card
+            style={{
+              padding: '.8rem',
+              // alignItems: 'center',
+              backgroundColor: '#ebe9f5',
+            }}
+          >
             {role !== 'master' && (
-              <div>
+              <Fragment>
                 {role === 'student' ? (
                   <Button
                     variant='outlined'
@@ -219,30 +220,34 @@ const TimeTable = () => {
                     Start Processing
                   </Button>
                 )}
-                <div>
-                  <Collapse in={openBox} timeout='auto' unmountOnExit>
-                    <Paper
-                      style={{
-                        height: '5rem',
-                        width: '20rem',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <TextField
-                        placeholder='Time Table ID'
-                        onChange={(event) => setTimeTableId(event.target.value)}
-                      />
-                      <IconButton color='secondary' onClick={handleChooseById}>
-                        <CheckCircleRounded />
-                      </IconButton>
-                    </Paper>
-                  </Collapse>
-                </div>
-              </div>
+              </Fragment>
             )}
           </Card>
+          <div>
+            <Collapse in={openBox} timeout='auto' unmountOnExit>
+              <Paper
+                style={{
+                  // height: '5rem',
+                  // width: '20rem',
+                  // display: 'flex',
+                  // justifyContent: 'center',
+                  // alignItems: 'center',
+                  height: '5rem',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <TextField
+                  placeholder='Time Table ID'
+                  onChange={(event) => setTimeTableId(event.target.value)}
+                />
+                <IconButton color='secondary' onClick={handleChooseById}>
+                  <CheckCircleRounded />
+                </IconButton>
+              </Paper>
+            </Collapse>
+          </div>
         </div>
         {tableShow && (
           <CustomTable

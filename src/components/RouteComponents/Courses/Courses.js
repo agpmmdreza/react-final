@@ -80,7 +80,6 @@ const Courses = () => {
   const [snackOpen, setSnackOpen] = useState(false);
   const [resMessage, setResMessage] = useState('');
   const [secTableShow, setSecTableShow] = useState(false);
-  const [showActions, setShowActions] = useState(false);
   const [tableHead, setTableHead] = useState([
     { label: 'ID', align: 'left', addField: [''], addHeader: true },
     {
@@ -121,7 +120,6 @@ const Courses = () => {
 
   useEffect(() => {
     if (role === 'admin') {
-      setShowActions(true);
       if (!tableHead.some((item) => item.label === 'Actions')) {
         tableHead.push({
           label: 'Actions',
@@ -148,7 +146,7 @@ const Courses = () => {
   }, [reload]);
 
   const handleGetCourses = () => {
-    fetch(`${authCtx.baseURL}/api/courses`, {
+    fetch(`${authCtx.baseURL}/api/Courses`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authCtx.token}`,
@@ -157,7 +155,6 @@ const Courses = () => {
       .then((res) => res.json())
       .then((resData) => {
         if (resData != null) {
-          console.log(resData);
           response = resData.data.list;
           pageData = {
             count: resData.data.list.length,
@@ -175,7 +172,7 @@ const Courses = () => {
   };
 
   const handleDeleteClicked = (id) => {
-    fetch(`${authCtx.baseURL}/api/courses/${id}`, {
+    fetch(`${authCtx.baseURL}/api/Courses/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -184,7 +181,6 @@ const Courses = () => {
     })
       .then((res) => res.json())
       .then((resData) => {
-        console.log(id, resData);
         if (resData.status === 'success') {
           setResMessage('Successfully Deleted!');
           setReload(true);
@@ -197,7 +193,7 @@ const Courses = () => {
 
   const handleUpdateClicked = (id, fields) => {
     if (fields.title.value !== '' && fields.unitsCount.value !== '') {
-      fetch(`${authCtx.baseURL}/api/courses/${id}`, {
+      fetch(`${authCtx.baseURL}/api/Courses/${id}`, {
         method: 'PUT',
         body: JSON.stringify({
           title: fields.title.value,
@@ -224,7 +220,7 @@ const Courses = () => {
   };
   const handleAddClicked = (fields) => {
     if (fields.title.value !== '' && fields.unitsCount.value !== '') {
-      fetch(`${authCtx.baseURL}/api/courses`, {
+      fetch(`${authCtx.baseURL}/api/Courses`, {
         method: 'POST',
         body: JSON.stringify({
           title: fields.title.value,
@@ -249,7 +245,7 @@ const Courses = () => {
   };
 
   const handleById = (id) => {
-    fetch(`${authCtx.baseURL}/api/courses/${id}`, {
+    fetch(`${authCtx.baseURL}/api/Courses/${id}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authCtx.token}`,
@@ -276,7 +272,7 @@ const Courses = () => {
 
   const handleGetByCourseId = () => {
     if (courseId !== '') {
-      fetch(`${authCtx.baseURL}/api/courses/${courseId}/${openBox.source}`, {
+      fetch(`${authCtx.baseURL}/api/Courses/${courseId}/${openBox.source}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${authCtx.token}`,
@@ -284,7 +280,6 @@ const Courses = () => {
       })
         .then((res) => res.json())
         .then((resData) => {
-          console.log(resData);
           if (resData.data != null) {
             response = resData.data.list;
             pageData = {
@@ -292,7 +287,7 @@ const Courses = () => {
               totalPages: resData.data.totalPage,
               page: resData.data.page,
             };
-            if (openBox.value === 'choose') {
+            if (openBox.source === 'Choose') {
               if (resData.status === 'success') {
                 setResMessage('Successfuly Chosen!');
                 setSnackOpen(true);
@@ -302,7 +297,7 @@ const Courses = () => {
               }
             }
             setTableHead(
-              openBox.source === 'masters' ? mastersHead : timeTablesHead
+              openBox.source === 'Masters' ? mastersHead : timeTablesHead
             );
             setTableShow(false);
             setSecTableShow(false);
@@ -319,7 +314,7 @@ const Courses = () => {
     <Fragment>
       <div className={classes.container}>
         <div style={{ marginBottom: '1rem', width: '90%' }}>
-          <Card style={{ padding: '.4rem' }}>
+          <Card style={{ padding: '.8rem', backgroundColor: '#ebe9f5' }}>
             {role === 'master' && (
               <Button
                 style={{ marginRight: '.5rem' }}
@@ -340,7 +335,7 @@ const Courses = () => {
               style={{ marginRight: '.5rem' }}
               onClick={() =>
                 setOpenBox((prevState) => ({
-                  source: 'timetables',
+                  source: 'TimeTables',
                   value: !prevState.value,
                 }))
               }
@@ -352,7 +347,7 @@ const Courses = () => {
               color='secondary'
               onClick={() => {
                 setOpenBox((prevState) => ({
-                  source: 'masters',
+                  source: 'Masters',
                   value: !prevState.value,
                 }));
               }}
@@ -375,7 +370,7 @@ const Courses = () => {
                   onChange={(event) => setCourseId(event.target.value)}
                 />
                 <IconButton color='secondary' onClick={handleGetByCourseId}>
-                  {openBox.source === 'choose' ? (
+                  {openBox.source === 'Choose' ? (
                     <CheckCircleOutlineRounded />
                   ) : (
                     <SearchRounded />

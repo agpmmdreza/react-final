@@ -76,42 +76,6 @@ const INITIAL_VALIDATION = {
 };
 
 const LoginPage = () => {
-  // const context = useContext(Context);
-  // const [username, setUsername] = useState();
-  // const [password, setPassword] = useState();
-  // const [isloggedIn, setIsLoggedIn] = useState(false);
-
-  // const classes = useStyles();
-
-  // const usernameHandler = (e) => {
-  //   setUsername(e.target.value);
-  // };
-
-  // const passwordHandler = (e) => {
-  //   setPassword(e.target.value);
-  // };
-
-  // const sendData = (e) => {
-  //   e.preventDefault();
-  //   axios
-  //     .post("http://localhost:8080/api/auth/login", {
-  //       code: username,
-  //       password: password,
-  //     })
-  //     .then((response) => {
-  //       console.log(response.data)
-  //       context.data = response.data;
-  //       // setIsLoggedIn(true);
-  //       window.location.href("/dashboard");
-
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   if (isloggedIn) {
-  //     window.location.href("/dashboard");
-  //   }
-  // }, [isloggedIn]);
   const classes = useStyles();
   const authCtx = useContext(AuthContext);
   const history = useHistory();
@@ -165,7 +129,7 @@ const LoginPage = () => {
   const handleFormSubmit = (event) => {
     event.preventDefault();
     if (fields.password.value !== '' && fields.userName.value !== '') {
-      fetch(`${authCtx.baseURL}/api/auth/login`, {
+      fetch(`${authCtx.baseURL}/api/Auth/Login`, {
         method: 'POST',
         body: JSON.stringify({
           code: fields.userName.value,

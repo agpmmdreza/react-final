@@ -96,7 +96,7 @@ const Bells = () => {
   }, [reload]);
 
   const handleGetBells = () => {
-    fetch(`${authCtx.baseURL}/api/bells`, {
+    fetch(`${authCtx.baseURL}/api/Bells`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authCtx.token}`,
@@ -122,7 +122,7 @@ const Bells = () => {
   };
 
   const handleDeleteClicked = (id) => {
-    fetch(`${authCtx.baseURL}/api/bells/${id}`, {
+    fetch(`${authCtx.baseURL}/api/Bells/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -131,7 +131,6 @@ const Bells = () => {
     })
       .then((res) => res.json())
       .then((resData) => {
-        console.log(id, resData);
         if (resData.status === 'success') {
           setResMessage('Successfully Deleted!');
           setReload(true);
@@ -144,7 +143,7 @@ const Bells = () => {
 
   const handleUpdateClicked = (id, fields) => {
     if (fields.label.value !== '' && fields.bellOfDay.value !== '') {
-      fetch(`${authCtx.baseURL}/api/bells/${id}`, {
+      fetch(`${authCtx.baseURL}/api/Bells/${id}`, {
         method: 'PUT',
         body: JSON.stringify({
           label: fields.label.value,
@@ -171,7 +170,7 @@ const Bells = () => {
   };
   const handleAddClicked = (fields) => {
     if (fields.label.value !== '' && fields.bellOfDay.value !== '') {
-      fetch(`${authCtx.baseURL}/api/bells`, {
+      fetch(`${authCtx.baseURL}/api/Bells`, {
         method: 'POST',
         body: JSON.stringify({
           label: fields.label.value,
@@ -196,8 +195,7 @@ const Bells = () => {
   };
 
   const handleById = (id) => {
-    console.log(id);
-    fetch(`${authCtx.baseURL}/api/bells/${id}`, {
+    fetch(`${authCtx.baseURL}/api/Bells/${id}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authCtx.token}`,
@@ -205,7 +203,6 @@ const Bells = () => {
     })
       .then((res) => res.json())
       .then((resData) => {
-        console.log(resData);
         if (resData.data != null) {
           response = [resData.data];
           pageData = {

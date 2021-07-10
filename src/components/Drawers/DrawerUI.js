@@ -129,7 +129,6 @@ const DrawerUI = () => {
   const classes = useStyles();
   let content;
   const authCtx = useContext(AuthContext);
-  console.log(authCtx);
   const role = authCtx.userRole.toLowerCase();
   if (role === 'admin') {
     content = adminDrawer;

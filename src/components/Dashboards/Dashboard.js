@@ -2,7 +2,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Fragment } from 'react';
 import DashboardRoutes from '../../routes/DashboardRoutes';
 import DrawerUI from '../Drawers/DrawerUI';
-import NavBar from '../UI/NavBar';
 import ProfileBar from '../UI/ProfileBar';
 
 const useStyles = makeStyles((theme) => ({

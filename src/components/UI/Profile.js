@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
 let response;
 
 const Profile = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
   const authCtx = useContext(AuthContext);
   const classes = useStyles();
   const [fields, setFields] = useState({
@@ -102,24 +102,12 @@ const Profile = () => {
   const [isProfileEdited, setIsProfileEdited] = useState(false);
   const [resMessage, setResMessage] = useState('');
 
-  const {
-    fields: newFields,
-    handleOnChange,
-    handleValidation,
-  } = useValidation(fields, setFields);
+  const { handleOnChange, handleValidation } = useValidation(fields, setFields);
 
   const {
-    fields: passwordFields,
     handleOnChange: handleOnChangePass,
     handleValidation: handleValidationPass,
   } = useValidation(passFields, setPassFields);
-
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpen(false);
-  };
 
   const handleEditClicked = () => {
     setShowProfile(false);
@@ -131,7 +119,7 @@ const Profile = () => {
   };
   const handlePasswordChange = () => {
     if (passFields.current.value !== '' && passFields.newPass.value !== '') {
-      fetch(`${authCtx.baseURL}/api/users/profile/changepassword`, {
+      fetch(`${authCtx.baseURL}/api/Users/Profile/ChangePassword`, {
         method: 'POST',
         body: JSON.stringify({
           currentPassword: passFields.current.value,
@@ -158,7 +146,7 @@ const Profile = () => {
 
   const handleEditProfile = () => {
     if (fields.first.value !== '' && fields.last.value !== '') {
-      fetch(`${authCtx.baseURL}/api/users/profile`, {
+      fetch(`${authCtx.baseURL}/api/Users/Profile`, {
         method: 'POST',
         body: JSON.stringify({
           firstName: fields.first.value,
@@ -184,8 +172,8 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    setIsLoading(true);
-    fetch(`${authCtx.baseURL}/api/users/profile`, {
+    // setIsLoading(true);
+    fetch(`${authCtx.baseURL}/api/Users/Profile`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authCtx.token}`,
@@ -193,12 +181,11 @@ const Profile = () => {
     })
       .then((res) => res.json())
       .then((resData) => {
-        console.log(resData);
         if (resData.data != null) {
           response = resData.data;
           setShowProfile(true);
         }
-        setIsLoading(false);
+        // setIsLoading(false);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isProfileEdited]);

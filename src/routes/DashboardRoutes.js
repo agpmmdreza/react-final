@@ -23,7 +23,6 @@ const TimeTable = React.lazy(() =>
 const TimeTableBells = React.lazy(() =>
   import('../components/RouteComponents/TimeTableBells/TimeTableBells')
 );
-
 const Profile = React.lazy(() => import('../components/UI/Profile'));
 const Days = React.lazy(() =>
   import('../components/RouteComponents/Days/Days')

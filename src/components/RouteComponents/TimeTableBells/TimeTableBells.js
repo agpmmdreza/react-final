@@ -130,7 +130,7 @@ const TimeTableBells = () => {
   }, [reload]);
 
   const handleGetBells = () => {
-    fetch(`${authCtx.baseURL}/api/timetablebells`, {
+    fetch(`${authCtx.baseURL}/api/TimeTableBells`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authCtx.token}`,
@@ -138,7 +138,6 @@ const TimeTableBells = () => {
     })
       .then((res) => res.json())
       .then((resData) => {
-        console.log(resData);
         if (resData != null) {
           response = resData.data.list;
           pageData = {
@@ -157,7 +156,7 @@ const TimeTableBells = () => {
   };
 
   const handleDeleteClicked = (id) => {
-    fetch(`${authCtx.baseURL}/api/timetablebells/${id}`, {
+    fetch(`${authCtx.baseURL}/api/TimeTableBells/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -166,7 +165,6 @@ const TimeTableBells = () => {
     })
       .then((res) => res.json())
       .then((resData) => {
-        console.log(id, resData);
         if (resData.status === 'success') {
           setResMessage('Successfully Deleted!');
           setReload(true);
@@ -179,7 +177,7 @@ const TimeTableBells = () => {
 
   const handleUpdateClicked = (id, fields) => {
     // if (fields.label.value !== '' && fields.bellOfDay.value !== '') {
-    //   fetch(`${authCtx.baseURL}/api/timetablebells/${id}`, {
+    //   fetch(`${authCtx.baseURL}/api/TimeTableBells/${id}`, {
     //     method: 'PUT',
     //     body: JSON.stringify({
     //       label: fields.label.value,
@@ -210,7 +208,7 @@ const TimeTableBells = () => {
       fields.bellId.value !== '' &&
       fields.dayId.value !== ''
     ) {
-      fetch(`${authCtx.baseURL}/api/timetablebells`, {
+      fetch(`${authCtx.baseURL}/api/TimeTableBells`, {
         method: 'POST',
         body: JSON.stringify({
           dayId: fields.dayId.value,
@@ -236,7 +234,7 @@ const TimeTableBells = () => {
   };
 
   const handleById = (id) => {
-    fetch(`${authCtx.baseURL}/api/timetablebells/${id}`, {
+    fetch(`${authCtx.baseURL}/api/TimeTableBells/${id}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authCtx.token}`,

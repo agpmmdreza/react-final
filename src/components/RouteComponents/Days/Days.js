@@ -96,7 +96,7 @@ const Days = () => {
   }, [reload]);
 
   const handleGetDays = () => {
-    fetch(`${authCtx.baseURL}/api/days`, {
+    fetch(`${authCtx.baseURL}/api/Days`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authCtx.token}`,
@@ -122,7 +122,7 @@ const Days = () => {
   };
 
   const handleDeleteClicked = (id) => {
-    fetch(`${authCtx.baseURL}/api/days/${id}`, {
+    fetch(`${authCtx.baseURL}/api/Days/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -143,7 +143,7 @@ const Days = () => {
 
   const handleUpdateClicked = (id, fields) => {
     if (fields.label.value !== '' && fields.dayOfWeek.value !== '') {
-      fetch(`${authCtx.baseURL}/api/days/${id}`, {
+      fetch(`${authCtx.baseURL}/api/Days/${id}`, {
         method: 'PUT',
         body: JSON.stringify({
           label: fields.label.value,
@@ -170,7 +170,7 @@ const Days = () => {
   };
   const handleAddClicked = (fields) => {
     if (fields.label.value !== '' && fields.dayOfWeek.value !== '') {
-      fetch(`${authCtx.baseURL}/api/days`, {
+      fetch(`${authCtx.baseURL}/api/Days`, {
         method: 'POST',
         body: JSON.stringify({
           label: fields.label.value,
@@ -195,7 +195,7 @@ const Days = () => {
   };
 
   const handleById = (id) => {
-    fetch(`${authCtx.baseURL}/api/days/${id}`, {
+    fetch(`${authCtx.baseURL}/api/Days/${id}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authCtx.token}`,

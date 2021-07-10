@@ -1,19 +1,23 @@
-import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Collapse from '@material-ui/core/Collapse';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
-import ClassIcon from '@material-ui/icons/Class';
+import {
+  List,
+  ListItem,
+  ListItemIcon,
+  Collapse,
+  ListItemAvatar,
+  Avatar,
+  ListItemText,
+} from '@material-ui/core';
+import {
+  ExpandLess,
+  ExpandMore,
+  ClassRounded,
+  InfoOutlined,
+} from '@material-ui/icons';
 import { useContext } from 'react';
 import AuthContext from '../../store/auth-context';
 import { Fragment } from 'react';
+import { useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,10 +35,10 @@ let response;
 const StudentAcnnouncements = () => {
   const classes = useStyles();
   const authCtx = useContext(AuthContext);
-  const [open, setOpen] = React.useState(true);
-  const [showList, setShowList] = React.useState(false);
+  const [open, setOpen] = useState(true);
+  const [showList, setShowList] = useState(false);
 
-  fetch(`${authCtx.baseURL}/api/announcements/studentannouncements`, {
+  fetch(`${authCtx.baseURL}/api/Announcements/StudentAnnouncements`, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${authCtx.token}`,
@@ -42,7 +46,6 @@ const StudentAcnnouncements = () => {
   })
     .then((res) => res.json())
     .then((resData) => {
-      console.log(resData);
       if (resData.data != null && resData.data.length !== 0) {
         response = resData.data;
         setShowList(true);
@@ -60,9 +63,9 @@ const StudentAcnnouncements = () => {
         <List>
           <ListItem button onClick={handleClick}>
             <ListItemIcon>
-              <InboxIcon style={{ color: '#FF4500' }} />
+              <InfoOutlined style={{ fontSize: '1.7rem', color: '#2980b9' }} />
             </ListItemIcon>
-            <ListItemText primary='Inbox' />
+            <ListItemText primary='Announcements' />
             {open ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
           <Collapse
@@ -72,11 +75,13 @@ const StudentAcnnouncements = () => {
             style={{ maxHeight: '18rem', overflow: 'auto' }}
           >
             <List component='div' disablePadding>
-              {response.map((row) => (
-                <ListItem className={classes.nested}>
+              {response.map((row, index) => (
+                <ListItem key={index} className={classes.nested}>
                   <ListItemAvatar>
-                    <Avatar style={{ backgroundColor: '#1C9C24' }}>
-                      <ClassIcon style={{ fontSize: '1.3rem' }} />
+                    <Avatar style={{ backgroundColor: '#ffbfd4' }}>
+                      <ClassRounded
+                        style={{ fontSize: '1.3rem', color: '#db356b' }}
+                      />
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText

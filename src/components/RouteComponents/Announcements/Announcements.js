@@ -119,7 +119,7 @@ const Announcements = () => {
   }, [reload]);
 
   const handleGetAnnouncements = () => {
-    fetch(`${authCtx.baseURL}/api/announcements`, {
+    fetch(`${authCtx.baseURL}/api/Announcements`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authCtx.token}`,
@@ -145,7 +145,7 @@ const Announcements = () => {
   };
 
   const handleDeleteClicked = (id) => {
-    fetch(`${authCtx.baseURL}/api/announcements/${id}`, {
+    fetch(`${authCtx.baseURL}/api/Announcements/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -154,7 +154,6 @@ const Announcements = () => {
     })
       .then((res) => res.json())
       .then((resData) => {
-        console.log(id, resData);
         if (resData.status === 'success') {
           setResMessage('Successfully Deleted!');
           setReload(true);
@@ -168,7 +167,7 @@ const Announcements = () => {
   const handleUpdateClicked = (id, fields) => {};
   const handleAddClicked = (fields) => {
     if (fields.timeTableId.value !== '' && fields.message.value !== '') {
-      fetch(`${authCtx.baseURL}/api/announcements`, {
+      fetch(`${authCtx.baseURL}/api/Announcements`, {
         method: 'POST',
         body: JSON.stringify({
           timeTableId: fields.timeTableId.value,
@@ -193,7 +192,7 @@ const Announcements = () => {
   };
 
   const handleById = (id) => {
-    fetch(`${authCtx.baseURL}/api/announcements/${id}`, {
+    fetch(`${authCtx.baseURL}/api/Announcements/${id}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authCtx.token}`,

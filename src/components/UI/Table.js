@@ -18,9 +18,9 @@ import {
   Box,
   Card,
   CardContent,
+  Divider,
 } from '@material-ui/core';
 import { Fragment, useState } from 'react';
-// import { makeStyles } from '@material-ui/core/styles';
 import {
   DeleteRounded,
   EditRounded,
@@ -30,7 +30,6 @@ import {
   ReplayRounded,
   GroupAddRounded,
 } from '@material-ui/icons';
-import useValidation from '../../hooks/use-validation';
 
 const camelize = (str) => {
   return str
@@ -45,32 +44,23 @@ const getPropertyValue = (object, dataToRetrieve) => {
   return object;
 };
 
-// const useStyles = makeStyles((theme) => ({
-//   //   paper: {
-//   //     width: '90%',
-//   //   },
-// }));
-
 const CustomTable = (props) => {
-  //   const classes = useStyles();
   const [open, setOpen] = useState('');
   const [page, setPage] = useState(0);
   const rowsPerPage = 10;
   const [addOpen, setAddOpen] = useState(false);
   const [addGroupOpen, setAddGroupOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
-  // const [fields, setFields] = useState(props.fields);
-  // console.log(fields);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
-  // console.log(props.fields, props.fields);
-
   return (
-    <Paper elevation={8} style={{ width: '90%' }}>
-      <Toolbar style={{ background: '#95a5a6' }}>
+    <Paper elevation={8} style={{ width: '90%', borderRadius: '1rem' }}>
+      <Toolbar
+        style={{ backgroundColor: '#ebe9f5', borderRadius: '1rem 1rem 0 0' }}
+      >
         <p>{props.tableTitle}</p>
 
         <div
@@ -193,8 +183,6 @@ const CustomTable = (props) => {
                           ...prevState,
                           props.INIT_BODY,
                         ]);
-                        console.log(props.groupFields);
-                        // props.onSetFields(props.fields);
                       }}
                     >
                       <AddCircle />
@@ -219,8 +207,7 @@ const CustomTable = (props) => {
             <Card
               variant='outlined'
               style={{
-                margin: '0 0.5rem',
-                marginBottom: '.5rem',
+                margin: '.8rem 0.4rem',
               }}
             >
               <CardContent
@@ -267,8 +254,9 @@ const CustomTable = (props) => {
 
       <Fragment>
         <TableContainer>
+          <Divider style={{ backgroundColor: '#c4c4c4' }} />
           <Table>
-            <TableHead style={{ backgroundColor: 'red' }}>
+            <TableHead style={{ backgroundColor: '#ebe9f5' }}>
               <TableRow>
                 {props.tableHead.map(
                   (row, index) =>
@@ -347,9 +335,9 @@ const CustomTable = (props) => {
                                       if (rowIn.secLabel === 'Time Table') {
                                         return row[camelize(rowIn.secLabel)][
                                           'timeTableBellList'
-                                        ].map((rowSec) => {
+                                        ].map((rowSec, indexSec) => {
                                           return (
-                                            <Box display='flex'>
+                                            <Box display='flex' key={indexSec}>
                                               <Box m='auto'>
                                                 {`${getPropertyValue(
                                                   rowSec,
@@ -366,9 +354,9 @@ const CustomTable = (props) => {
                                       } else {
                                         return row[
                                           camelize(rowIn.secLabel)
-                                        ].map((rowSec) => {
+                                        ].map((rowSec, indexSec) => {
                                           return (
-                                            <Box display='flex'>
+                                            <Box display='flex' key={indexSec}>
                                               <Box m='auto'>
                                                 {`${getPropertyValue(
                                                   rowSec,
@@ -405,7 +393,7 @@ const CustomTable = (props) => {
                                   {index === open ? (
                                     <CancelRounded />
                                   ) : (
-                                    <EditRounded />
+                                    <EditRounded style={{ color: '#16a085' }} />
                                   )}
                                 </IconButton>
                               )}
@@ -415,7 +403,7 @@ const CustomTable = (props) => {
                                 size='small'
                                 onClick={() => setOpenDialog(true)}
                               >
-                                <DeleteRounded />
+                                <DeleteRounded style={{ color: '#e74c3c' }} />
                               </IconButton>
                               <Dialog
                                 open={openDialog}
