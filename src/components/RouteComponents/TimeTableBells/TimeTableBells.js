@@ -55,13 +55,13 @@ const tableHead = [
   {
     label: 'Day Id',
     align: 'center',
-    addField: ['add'],
+    addField: ['add', 'update'],
     addHeader: false,
   },
   {
     label: 'Bell Id',
     align: 'center',
-    addField: ['add'],
+    addField: ['add', 'update'],
     addHeader: false,
   },
 ];
