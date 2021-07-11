@@ -1,14 +1,7 @@
 import { Fragment, useContext, useState } from 'react';
 import AuthContext from '../../../store/auth-context';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Button,
-  Collapse,
-  Paper,
-  TextField,
-  IconButton,
-  Card,
-} from '@material-ui/core';
+import { Button, Collapse, Paper, TextField, Card } from '@material-ui/core';
 import { useEffect } from 'react';
 import CustomTable from '../../UI/Table';
 import CustomSnackBar from '../../UI/SnackBar';
@@ -47,7 +40,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     minHeight: '450px',
-    justifyContent: 'center',
     alignItems: 'center',
   },
 
@@ -91,9 +83,17 @@ const TimeTable = () => {
   const { handleOnChange, handleValidation } = useValidation(fields, setFields);
   useEffect(() => {
     if (!tableShow) {
-      handleGetTimeTables(1);
+      if (role === 'student') {
+        handleStudentUnits();
+      } else {
+        handleGetTimeTables(1);
+      }
     } else if (tableShow && reload) {
-      handleGetTimeTables(1);
+      if (role === 'student') {
+        handleStudentUnits();
+      } else {
+        handleGetTimeTables(1);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reload]);
@@ -113,6 +113,33 @@ const TimeTable = () => {
             count: resData.data.list.length,
             totalPages: resData.data.totalPage,
             page: resData.data.page - 1,
+          });
+          setTableShow(false);
+          setTableShow(true);
+          setIdCalled(false);
+          setReload(false);
+        } else {
+          console.log(resData.message);
+        }
+      });
+  };
+
+  const handleStudentUnits = () => {
+    fetch(`${authCtx.baseURL}/api/TimeTables/StudentUnits`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authCtx.token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((resData) => {
+        console.log(resData);
+        if (resData != null) {
+          response = resData.data;
+          setPageData({
+            count: resData.data.length,
+            totalPages: 1,
+            page: 0,
           });
           setTableShow(false);
           setTableShow(true);
@@ -183,8 +210,10 @@ const TimeTable = () => {
         .then((resData) => {
           if (resData.status === 'success') {
             setResMessage('Successfully Chosen!');
+            setTimeTableId('');
+            setReload(true);
           } else if (resData.data === null) {
-            setResMessage('No match found!');
+            setResMessage(resData.message);
           } else {
             setResMessage('Something Went Wrong!');
           }
@@ -207,14 +236,32 @@ const TimeTable = () => {
             {role !== 'master' && (
               <Fragment>
                 {role === 'student' ? (
-                  <Button
-                    variant='outlined'
-                    color='secondary'
-                    style={{ marginRight: '.5rem' }}
-                    onClick={() => setOpenBox(!openBox)}
-                  >
-                    Choose Time Table
-                  </Button>
+                  <Fragment>
+                    <Button
+                      variant='outlined'
+                      color='secondary'
+                      style={{ marginRight: '.5rem' }}
+                      onClick={() => handleStudentUnits()}
+                    >
+                      Your Units
+                    </Button>
+                    <Button
+                      variant='outlined'
+                      color='secondary'
+                      style={{ marginRight: '.5rem' }}
+                      onClick={() => handleGetTimeTables(1)}
+                    >
+                      Available TimeTables
+                    </Button>
+                    <Button
+                      variant='outlined'
+                      color='secondary'
+                      style={{ marginRight: '.5rem' }}
+                      onClick={() => setOpenBox(!openBox)}
+                    >
+                      Choose TimeTable
+                    </Button>
+                  </Fragment>
                 ) : (
                   <Button
                     variant='outlined'
@@ -231,11 +278,6 @@ const TimeTable = () => {
             <Collapse in={openBox} timeout='auto' unmountOnExit>
               <Paper
                 style={{
-                  // height: '5rem',
-                  // width: '20rem',
-                  // display: 'flex',
-                  // justifyContent: 'center',
-                  // alignItems: 'center',
                   height: '5rem',
                   display: 'flex',
                   justifyContent: 'center',
@@ -243,12 +285,21 @@ const TimeTable = () => {
                 }}
               >
                 <TextField
+                  value={timeTableId}
                   placeholder='Time Table ID'
                   onChange={(event) => setTimeTableId(event.target.value)}
                 />
-                <IconButton color='secondary' onClick={handleChooseById}>
-                  <CheckCircleRounded />
-                </IconButton>
+                <Button
+                  variant='contained'
+                  color='secondary'
+                  onClick={handleChooseById}
+                  style={{ marginLeft: '0.8rem' }}
+                >
+                  Choose
+                  <CheckCircleRounded
+                    style={{ marginLeft: '0.2rem', fontSize: '1.2rem' }}
+                  />
+                </Button>
               </Paper>
             </Collapse>
           </div>

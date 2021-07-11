@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     minHeight: '450px',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     alignItems: 'center',
   },
   paper: {
@@ -275,7 +275,8 @@ const Courses = () => {
   };
 
   const handleGetByCourseId = () => {
-    if (courseId !== '') {
+    console.log(courseId, openBox);
+    if (courseId !== '' && !isNaN(courseId)) {
       fetch(`${authCtx.baseURL}/api/Courses/${courseId}/${openBox.source}`, {
         headers: {
           'Content-Type': 'application/json',
@@ -284,6 +285,7 @@ const Courses = () => {
       })
         .then((res) => res.json())
         .then((resData) => {
+          console.log(resData);
           if (resData.data != null) {
             response = resData.data.list;
             setPageData({
@@ -336,12 +338,13 @@ const Courses = () => {
               variant='outlined'
               color='secondary'
               style={{ marginRight: '.5rem' }}
-              onClick={() =>
+              onClick={() => {
+                setCourseId('');
                 setOpenBox((prevState) => ({
                   source: 'TimeTables',
                   value: !prevState.value,
-                }))
-              }
+                }));
+              }}
             >
               TimeTables by Course ID
             </Button>
@@ -349,6 +352,7 @@ const Courses = () => {
               variant='outlined'
               color='secondary'
               onClick={() => {
+                setCourseId('');
                 setOpenBox((prevState) => ({
                   source: 'Masters',
                   value: !prevState.value,

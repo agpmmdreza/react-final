@@ -420,7 +420,6 @@ const CustomTable = (props) => {
                               timeout='auto'
                               unmountOnExit
                             >
-                              {/* <Box margin={1}> */}
                               <form
                                 style={{
                                   display: 'flex',

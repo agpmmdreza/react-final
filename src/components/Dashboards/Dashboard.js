@@ -54,7 +54,6 @@ const Dashboard = () => {
           <DrawerUI />
         </div>
         <div className={classes.middle} style={{ overflowY: 'auto' }}>
-          {/* <NavBar /> */}
           <DashboardRoutes />
         </div>
         <div

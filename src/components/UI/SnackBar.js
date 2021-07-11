@@ -6,7 +6,6 @@ import { Fragment } from 'react';
 const useStyles = makeStyles((theme) => ({
   snack: {
     background: '#04c256',
-    color: 'black',
   },
   snackError: {
     background: '#EA2027',
