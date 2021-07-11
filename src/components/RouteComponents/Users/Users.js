@@ -7,7 +7,6 @@ import CustomSnackBar from '../../UI/SnackBar';
 import useValidation from '../../../hooks/use-validation';
 
 let response;
-let pageData;
 
 const tableHead = [
   { label: 'ID', align: 'left', addField: [''], addHeader: true },
@@ -108,11 +107,16 @@ const Users = () => {
   const authCtx = useContext(AuthContext);
   const role = authCtx.userRole.toLowerCase();
   const [idCalled, setIdCalled] = useState(false);
+  const [pageData, setPageData] = useState({
+    count: '',
+    page: '',
+    totalPages: '',
+  });
+
   const [tableShow, setTableShow] = useState(false);
   const [reload, setReload] = useState(false);
   const [snackOpen, setSnackOpen] = useState(false);
   const [resMessage, setResMessage] = useState('');
-  // const { id, ...rest } = INIT_BODY;
   const [fields, setFields] = useState(INIT_BODY);
   const [groupFields, setGroupFields] = useState([INIT_BODY]);
   const classes = useStyles();
@@ -125,15 +129,15 @@ const Users = () => {
 
   useEffect(() => {
     if (!tableShow) {
-      handleGetUsers();
+      handleGetUsers(1);
     } else if (tableShow && reload) {
-      handleGetUsers();
+      handleGetUsers(1);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reload, fields]);
 
-  const handleGetUsers = () => {
-    fetch(`${authCtx.baseURL}/api/Users`, {
+  const handleGetUsers = (page) => {
+    fetch(`${authCtx.baseURL}/api/Users?page=${page}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authCtx.token}`,
@@ -141,13 +145,13 @@ const Users = () => {
     })
       .then((res) => res.json())
       .then((resData) => {
-        if (resData != null) {
-          response = resData.data.list;
-          pageData = {
+        if (resData.data != null) {
+          setPageData({
             count: resData.data.list.length,
             totalPages: resData.data.totalPage,
-            page: resData.data.page,
-          };
+            page: resData.data.page - 1,
+          });
+          response = resData.data.list;
           setTableShow(false);
           setTableShow(true);
           setIdCalled(false);
@@ -279,12 +283,13 @@ const Users = () => {
       .then((res) => res.json())
       .then((resData) => {
         if (resData.data != null) {
-          response = [resData.data];
-          pageData = {
+          setPageData({
             count: 1,
-            totalPages: 1,
-            page: 1,
-          };
+            totalPages: 0,
+            page: 0,
+          });
+          response = [resData.data];
+
           setTableShow(false);
           setTableShow(true);
           setIdCalled(true);
@@ -295,9 +300,9 @@ const Users = () => {
       });
   };
 
-  // const handleAddByGroup = () => {
-  //   setFields((prevState) => [...prevState, INIT_BODY]);
-  // };
+  const loadData = (newPage) => {
+    handleGetUsers(newPage);
+  };
 
   return (
     <Fragment>
@@ -308,9 +313,8 @@ const Users = () => {
             idCalled={idCalled}
             reloadPage={(data) => setReload(data)}
             response={response}
-            pageCount={pageData.count}
-            pageNum={pageData.page}
-            totalPages={pageData.totalPages}
+            pageData={pageData}
+            loadData={loadData}
             tableHead={tableHead}
             tableTitle='Users List'
             showAdd={role === 'admin'}
@@ -321,7 +325,6 @@ const Users = () => {
             fields={fields}
             groupFields={groupFields}
             INIT_BODY={INIT_BODY}
-            // INIT_BODY_GROUP={rest}
             handleDelete={handleDeleteClicked}
             handleAdd={handleAddClicked}
             handleAddGroup={handleAddGroupClicked}
@@ -333,7 +336,6 @@ const Users = () => {
             onBlur={handleValidation}
             onChangeGroup={handleOnChangeGroup}
             onBlurGroup={handleValidationGroup}
-            // handleAddByGroup={handleAddByGroup}
           />
           // </Fragment>
         )}

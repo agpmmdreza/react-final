@@ -46,14 +46,16 @@ const getPropertyValue = (object, dataToRetrieve) => {
 
 const CustomTable = (props) => {
   const [open, setOpen] = useState('');
-  const [page, setPage] = useState(0);
   const rowsPerPage = 10;
   const [addOpen, setAddOpen] = useState(false);
+  const [rowId, setRowId] = useState(null);
   const [addGroupOpen, setAddGroupOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
 
   const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+    // setPage(newPage);
+    console.log(newPage);
+    props.loadData(newPage + 1);
   };
 
   return (
@@ -270,91 +272,88 @@ const CustomTable = (props) => {
             </TableHead>
             <TableBody>
               {props.response.length !== 0 ? (
-                props.response
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row, index) => {
-                    return (
-                      <Fragment key={index}>
-                        <TableRow hover>
-                          {props.tableHead.map((rowIn, indexIn) => {
-                            return (
-                              rowIn.addHeader &&
-                              rowIn.label !== 'Actions' && (
-                                <TableCell key={indexIn} align={rowIn.align}>
-                                  {(() => {
-                                    if (rowIn.label === 'Master') {
-                                      return (
-                                        getPropertyValue(
-                                          row[camelize(rowIn.secLabel)],
-                                          rowIn.path === ''
-                                            ? 'firstName'
-                                            : rowIn.path + '.firstName'
-                                        ) +
-                                        ' ' +
-                                        getPropertyValue(
-                                          row[camelize(rowIn.secLabel)],
-                                          rowIn.path === ''
-                                            ? 'lastName'
-                                            : rowIn.path + '.lastName'
-                                        )
-                                      );
-                                    }
-                                    if (
-                                      rowIn.label === 'Day' ||
-                                      rowIn.label === 'Bell'
-                                    ) {
-                                      return getPropertyValue(
-                                        row[camelize(rowIn.label)],
-                                        rowIn.path
-                                      );
-                                    }
-                                    if (rowIn.label === 'Course') {
-                                      return rowIn.secLabel
-                                        ? `${getPropertyValue(
-                                            row[camelize(rowIn.secLabel)][
-                                              'course'
-                                            ],
-                                            'title'
-                                          )} (${getPropertyValue(
-                                            row[camelize(rowIn.secLabel)][
-                                              'course'
-                                            ],
-                                            'unitsCount'
-                                          )})
+                props.response.map((row, index) => {
+                  return (
+                    <Fragment key={index}>
+                      <TableRow hover>
+                        {props.tableHead.map((rowIn, indexIn) => {
+                          return (
+                            rowIn.addHeader &&
+                            rowIn.label !== 'Actions' && (
+                              <TableCell key={indexIn} align={rowIn.align}>
+                                {(() => {
+                                  if (rowIn.label === 'Master') {
+                                    return (
+                                      getPropertyValue(
+                                        row[camelize(rowIn.secLabel)],
+                                        rowIn.path === ''
+                                          ? 'firstName'
+                                          : rowIn.path + '.firstName'
+                                      ) +
+                                      ' ' +
+                                      getPropertyValue(
+                                        row[camelize(rowIn.secLabel)],
+                                        rowIn.path === ''
+                                          ? 'lastName'
+                                          : rowIn.path + '.lastName'
+                                      )
+                                    );
+                                  }
+                                  if (
+                                    rowIn.label === 'Day' ||
+                                    rowIn.label === 'Bell'
+                                  ) {
+                                    return getPropertyValue(
+                                      row[camelize(rowIn.label)],
+                                      rowIn.path
+                                    );
+                                  }
+                                  if (rowIn.label === 'Course') {
+                                    return rowIn.secLabel
+                                      ? `${getPropertyValue(
+                                          row[camelize(rowIn.secLabel)][
+                                            'course'
+                                          ],
+                                          'title'
+                                        )} (${getPropertyValue(
+                                          row[camelize(rowIn.secLabel)][
+                                            'course'
+                                          ],
+                                          'unitsCount'
+                                        )})
                                         `
-                                        : `${getPropertyValue(
-                                            row[camelize(rowIn.label)],
-                                            'title'
-                                          )} (${getPropertyValue(
-                                            row[camelize(rowIn.label)],
-                                            'unitsCount'
-                                          )})
+                                      : `${getPropertyValue(
+                                          row[camelize(rowIn.label)],
+                                          'title'
+                                        )} (${getPropertyValue(
+                                          row[camelize(rowIn.label)],
+                                          'unitsCount'
+                                        )})
                                         `;
-                                    }
-                                    if (rowIn.label === 'Course Time') {
-                                      if (rowIn.secLabel === 'Time Table') {
-                                        return row[camelize(rowIn.secLabel)][
-                                          'timeTableBellList'
-                                        ].map((rowSec, indexSec) => {
-                                          return (
-                                            <Box display='flex' key={indexSec}>
-                                              <Box m='auto'>
-                                                {`${getPropertyValue(
-                                                  rowSec,
-                                                  'day.label'
-                                                )} (${getPropertyValue(
-                                                  rowSec,
-                                                  'bell.label'
-                                                )})
+                                  }
+                                  if (rowIn.label === 'Course Time') {
+                                    if (rowIn.secLabel === 'Time Table') {
+                                      return row[camelize(rowIn.secLabel)][
+                                        'timeTableBellList'
+                                      ].map((rowSec, indexSec) => {
+                                        return (
+                                          <Box display='flex' key={indexSec}>
+                                            <Box m='auto'>
+                                              {`${getPropertyValue(
+                                                rowSec,
+                                                'day.label'
+                                              )} (${getPropertyValue(
+                                                rowSec,
+                                                'bell.label'
+                                              )})
                                       `}
-                                              </Box>
                                             </Box>
-                                          );
-                                        });
-                                      } else {
-                                        return row[
-                                          camelize(rowIn.secLabel)
-                                        ].map((rowSec, indexSec) => {
+                                          </Box>
+                                        );
+                                      });
+                                    } else {
+                                      return row[camelize(rowIn.secLabel)].map(
+                                        (rowSec, indexSec) => {
                                           return (
                                             <Box display='flex' key={indexSec}>
                                               <Box m='auto'>
@@ -369,164 +368,137 @@ const CustomTable = (props) => {
                                               </Box>
                                             </Box>
                                           );
-                                        });
-                                      }
-                                    } else {
-                                      return row[camelize(rowIn.label)];
+                                        }
+                                      );
                                     }
-                                  })()}
-                                </TableCell>
-                              )
-                            );
-                          })}
-                          {props.showActions && (
-                            <TableCell align='right'>
-                              {props.showEdit && (
-                                <IconButton
-                                  size='small'
-                                  onClick={() =>
-                                    open === index
-                                      ? setOpen('')
-                                      : setOpen(index)
+                                  } else {
+                                    return row[camelize(rowIn.label)];
                                   }
-                                >
-                                  {index === open ? (
-                                    <CancelRounded />
-                                  ) : (
-                                    <EditRounded style={{ color: '#16a085' }} />
-                                  )}
-                                </IconButton>
-                              )}
-
-                              <IconButton
-                                color='secondary'
-                                size='small'
-                                onClick={() => setOpenDialog(true)}
-                              >
-                                <DeleteRounded style={{ color: '#e74c3c' }} />
-                              </IconButton>
-                              <Dialog
-                                open={openDialog}
-                                onClose={() => setOpenDialog(false)}
-                                transitionDuration={200}
-                              >
-                                <DialogTitle>
-                                  {'Are you sure you want to delete?'}
-                                </DialogTitle>
-                                <DialogActions>
-                                  <Button
-                                    onClick={() => setOpenDialog(false)}
-                                    color='primary'
-                                  >
-                                    Cancel
-                                  </Button>
-                                  <Button
-                                    onClick={() => {
-                                      props.handleDelete(row.id);
-                                      setOpenDialog(false);
-                                    }}
-                                    color='primary'
-                                    autoFocus
-                                  >
-                                    Delete
-                                  </Button>
-                                </DialogActions>
-                              </Dialog>
-                            </TableCell>
-                          )}
-                        </TableRow>
+                                })()}
+                              </TableCell>
+                            )
+                          );
+                        })}
                         {props.showActions && (
-                          <TableRow>
-                            <TableCell
-                              style={{ paddingBottom: 0, paddingTop: 0 }}
-                              colSpan={6}
-                            >
-                              <Collapse
-                                in={index === open}
-                                timeout='auto'
-                                unmountOnExit
+                          <TableCell align='right'>
+                            {props.showEdit && (
+                              <IconButton
+                                size='small'
+                                onClick={() =>
+                                  open === index ? setOpen('') : setOpen(index)
+                                }
                               >
-                                {/* <Box margin={1}> */}
-                                <form
+                                {index === open ? (
+                                  <CancelRounded />
+                                ) : (
+                                  <EditRounded style={{ color: '#16a085' }} />
+                                )}
+                              </IconButton>
+                            )}
+
+                            <IconButton
+                              color='secondary'
+                              size='small'
+                              onClick={() => {
+                                setRowId(row.id);
+                                setOpenDialog(true);
+                              }}
+                            >
+                              <DeleteRounded style={{ color: '#e74c3c' }} />
+                            </IconButton>
+                          </TableCell>
+                        )}
+                      </TableRow>
+                      {props.showActions && (
+                        <TableRow>
+                          <TableCell
+                            style={{ paddingBottom: 0, paddingTop: 0 }}
+                            colSpan={6}
+                          >
+                            <Collapse
+                              in={index === open}
+                              timeout='auto'
+                              unmountOnExit
+                            >
+                              {/* <Box margin={1}> */}
+                              <form
+                                style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  flexWrap: 'wrap',
+                                  justifyContent: 'center',
+                                }}
+                              >
+                                <Card
+                                  variant='outlined'
                                   style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    flexWrap: 'wrap',
-                                    justifyContent: 'center',
+                                    margin: '.8rem .4rem',
                                   }}
                                 >
-                                  <Card
-                                    variant='outlined'
+                                  <CardContent
                                     style={{
-                                      margin: '0.4rem 0.4rem',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      flexWrap: 'wrap',
                                     }}
                                   >
-                                    <CardContent
+                                    {props.tableHead.map(
+                                      (rowSec, indexSec) =>
+                                        rowSec.addField.includes('update') && (
+                                          <TextField
+                                            value={
+                                              props.fields[
+                                                camelize(rowSec.label)
+                                              ].value
+                                            }
+                                            error={
+                                              props.fields[
+                                                camelize(rowSec.label)
+                                              ].error
+                                            }
+                                            helperText={
+                                              props.fields[
+                                                camelize(rowSec.label)
+                                              ].helper
+                                            }
+                                            key={indexSec}
+                                            style={{
+                                              width: '10rem',
+                                              margin: '1rem',
+                                            }}
+                                            placeholder={rowSec.label}
+                                            name={camelize(rowSec.label)}
+                                            onBlur={props.onBlur}
+                                            onChange={props.onChange}
+                                          />
+                                        )
+                                    )}
+                                    <Button
+                                      variant='contained'
+                                      color='primary'
                                       style={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        flexWrap: 'wrap',
+                                        marginLeft: 'auto',
+                                        marginRight: '1rem',
+                                      }}
+                                      onClick={() => {
+                                        props.handleUpdate(
+                                          row.id,
+                                          props.fields
+                                        );
                                       }}
                                     >
-                                      {props.tableHead.map(
-                                        (rowSec, indexSec) =>
-                                          rowSec.addField.includes(
-                                            'update'
-                                          ) && (
-                                            <TextField
-                                              value={
-                                                props.fields[
-                                                  camelize(rowSec.label)
-                                                ].value
-                                              }
-                                              error={
-                                                props.fields[
-                                                  camelize(rowSec.label)
-                                                ].error
-                                              }
-                                              helperText={
-                                                props.fields[
-                                                  camelize(rowSec.label)
-                                                ].helper
-                                              }
-                                              key={indexSec}
-                                              style={{
-                                                width: '10rem',
-                                                margin: '1rem',
-                                              }}
-                                              placeholder={rowSec.label}
-                                              name={camelize(rowSec.label)}
-                                              onBlur={props.onBlur}
-                                              onChange={props.onChange}
-                                            />
-                                          )
-                                      )}
-                                      <Button
-                                        variant='contained'
-                                        color='primary'
-                                        style={{
-                                          marginLeft: 'auto',
-                                          marginRight: '1rem',
-                                        }}
-                                        onClick={() => {
-                                          props.handleUpdate(
-                                            row.id,
-                                            props.fields
-                                          );
-                                        }}
-                                      >
-                                        Update
-                                      </Button>
-                                    </CardContent>
-                                  </Card>
-                                </form>
-                              </Collapse>
-                            </TableCell>
-                          </TableRow>
-                        )}
-                      </Fragment>
-                    );
-                  })
+                                      Update
+                                    </Button>
+                                  </CardContent>
+                                </Card>
+                              </form>
+                            </Collapse>
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </Fragment>
+                  );
+                })
               ) : (
                 <TableRow>
                   <TableCell colSpan={6} style={{ textAlign: 'center' }}>
@@ -534,6 +506,28 @@ const CustomTable = (props) => {
                   </TableCell>
                 </TableRow>
               )}
+              <Dialog
+                open={openDialog}
+                onClose={() => setOpenDialog(false)}
+                transitionDuration={200}
+              >
+                <DialogTitle>{'Are you sure you want to delete?'}</DialogTitle>
+                <DialogActions>
+                  <Button onClick={() => setOpenDialog(false)} color='primary'>
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      props.handleDelete(rowId);
+                      setOpenDialog(false);
+                    }}
+                    color='primary'
+                    autoFocus
+                  >
+                    Delete
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </TableBody>
           </Table>
         </TableContainer>
@@ -541,10 +535,21 @@ const CustomTable = (props) => {
           component='div'
           labelRowsPerPage=''
           rowsPerPageOptions={[]}
-          count={props.pageCount !== undefined && Number(props.pageCount)}
+          count={-1}
           rowsPerPage={rowsPerPage}
-          page={props.pageNum > 0 && props.pageCount < 10 ? 0 : props.pageNum}
+          page={props.pageData.page}
           onChangePage={handleChangePage}
+          nextIconButtonProps={{
+            disabled:
+              props.pageData.totalPages === 0
+                ? true
+                : props.pageData.page + 1 === props.pageData.totalPages,
+          }}
+          labelDisplayedRows={() =>
+            `Page ${
+              props.pageData.totalPages === 0 ? 0 : props.pageData.page + 1
+            } - ${props.pageData.totalPages}`
+          }
         />
       </Fragment>
     </Paper>

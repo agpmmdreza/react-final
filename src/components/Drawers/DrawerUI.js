@@ -125,7 +125,7 @@ const studentDrawer = [
 ];
 
 const DrawerUI = () => {
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState(0);
   const classes = useStyles();
   let content;
   const authCtx = useContext(AuthContext);

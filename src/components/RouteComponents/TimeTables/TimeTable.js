@@ -16,7 +16,6 @@ import { CheckCircleRounded } from '@material-ui/icons';
 import useValidation from '../../../hooks/use-validation';
 
 let response;
-let pageData;
 
 const tableHead = [
   { label: 'ID', align: 'left', addField: [''], addHeader: true },
@@ -68,6 +67,11 @@ const TimeTable = () => {
   const authCtx = useContext(AuthContext);
   const role = authCtx.userRole.toLowerCase();
   const [idCalled, setIdCalled] = useState(false);
+  const [pageData, setPageData] = useState({
+    count: '',
+    page: '',
+    totalPages: '',
+  });
   const [tableShow, setTableShow] = useState(false);
   const [timeTableId, setTimeTableId] = useState('');
   const [reload, setReload] = useState(false);
@@ -87,15 +91,15 @@ const TimeTable = () => {
   const { handleOnChange, handleValidation } = useValidation(fields, setFields);
   useEffect(() => {
     if (!tableShow) {
-      handleGetTimeTables();
+      handleGetTimeTables(1);
     } else if (tableShow && reload) {
-      handleGetTimeTables();
+      handleGetTimeTables(1);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reload]);
 
-  const handleGetTimeTables = () => {
-    fetch(`${authCtx.baseURL}/api/TimeTables`, {
+  const handleGetTimeTables = (page) => {
+    fetch(`${authCtx.baseURL}/api/TimeTables?page=${page}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authCtx.token}`,
@@ -105,11 +109,11 @@ const TimeTable = () => {
       .then((resData) => {
         if (resData != null) {
           response = resData.data.list;
-          pageData = {
+          setPageData({
             count: resData.data.list.length,
             totalPages: resData.data.totalPage,
-            page: resData.data.page,
-          };
+            page: resData.data.page - 1,
+          });
           setTableShow(false);
           setTableShow(true);
           setIdCalled(false);
@@ -131,11 +135,11 @@ const TimeTable = () => {
       .then((resData) => {
         if (resData.data != null) {
           response = [resData.data];
-          pageData = {
+          setPageData({
             count: 1,
-            totalPages: 1,
-            page: 1,
-          };
+            totalPages: 0,
+            page: 0,
+          });
           setTableShow(false);
           setTableShow(true);
           setIdCalled(true);
@@ -254,9 +258,7 @@ const TimeTable = () => {
             idCalled={idCalled}
             reloadPage={(data) => setReload(data)}
             response={response}
-            pageCount={pageData.count}
-            pageNum={pageData.page}
-            totalPages={pageData.totalPages}
+            pageData={pageData}
             tableHead={tableHead}
             tableTitle='Time Tables List'
             fields={fields}

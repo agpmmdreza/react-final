@@ -16,7 +16,6 @@ import { CheckCircleOutlineRounded, SearchRounded } from '@material-ui/icons';
 import useValidation from '../../../hooks/use-validation';
 
 let response;
-let pageData;
 
 const timeTablesHead = [
   { label: 'ID', align: 'left', addField: [''], addHeader: true },
@@ -73,6 +72,11 @@ const Courses = () => {
   const authCtx = useContext(AuthContext);
   const role = authCtx.userRole.toLowerCase();
   const [idCalled, setIdCalled] = useState(false);
+  const [pageData, setPageData] = useState({
+    count: '',
+    page: '',
+    totalPages: '',
+  });
   const [courseId, setCourseId] = useState('');
   const [openBox, setOpenBox] = useState({ source: '', value: false });
   const [tableShow, setTableShow] = useState(false);
@@ -130,23 +134,23 @@ const Courses = () => {
       }
     }
     if (!tableShow && role !== 'student') {
-      handleGetCourses();
+      handleGetCourses(1);
     } else if (tableShow && reload) {
-      handleGetCourses();
+      handleGetCourses(1);
     } else if (role === 'student') {
       response = [];
-      pageData = {
+      setPageData({
         count: 0,
         totalPages: 0,
         page: 0,
-      };
+      });
       setSecTableShow(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reload]);
 
-  const handleGetCourses = () => {
-    fetch(`${authCtx.baseURL}/api/Courses`, {
+  const handleGetCourses = (page) => {
+    fetch(`${authCtx.baseURL}/api/Courses?page=${page}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authCtx.token}`,
@@ -156,11 +160,11 @@ const Courses = () => {
       .then((resData) => {
         if (resData != null) {
           response = resData.data.list;
-          pageData = {
+          setPageData({
             count: resData.data.list.length,
             totalPages: resData.data.totalPage,
-            page: resData.data.page,
-          };
+            page: resData.data.page - 1,
+          });
           setTableShow(false);
           setTableShow(true);
           setIdCalled(false);
@@ -255,11 +259,11 @@ const Courses = () => {
       .then((resData) => {
         if (resData.data != null) {
           response = [resData.data];
-          pageData = {
+          setPageData({
             count: 1,
-            totalPages: 1,
-            page: 1,
-          };
+            totalPages: 0,
+            page: 0,
+          });
           setTableShow(false);
           setTableShow(true);
           setIdCalled(true);
@@ -282,11 +286,11 @@ const Courses = () => {
         .then((resData) => {
           if (resData.data != null) {
             response = resData.data.list;
-            pageData = {
+            setPageData({
               count: resData.data.list.length,
               totalPages: resData.data.totalPage,
               page: resData.data.page,
-            };
+            });
             if (openBox.source === 'Choose') {
               if (resData.status === 'success') {
                 setResMessage('Successfuly Chosen!');
@@ -401,9 +405,7 @@ const Courses = () => {
             idCalled={idCalled}
             reloadPage={(data) => setReload(data)}
             response={response}
-            pageCount={pageData.count}
-            pageNum={pageData.page}
-            totalPages={pageData.totalPages}
+            pageData={pageData}
             tableHead={tableHead}
             tableTitle='Courses List'
             showEdit={role === 'admin'}

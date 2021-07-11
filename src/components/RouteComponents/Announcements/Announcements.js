@@ -7,7 +7,6 @@ import CustomSnackBar from '../../UI/SnackBar';
 import useValidation from '../../../hooks/use-validation';
 
 let response;
-let pageData;
 
 const tableHead = [
   { label: 'ID', align: 'left', addField: [''], addHeader: true },
@@ -72,6 +71,12 @@ const Announcements = () => {
   const authCtx = useContext(AuthContext);
   const role = authCtx.userRole.toLowerCase();
   const [idCalled, setIdCalled] = useState(false);
+  const [pageData, setPageData] = useState({
+    count: '',
+    page: '',
+    totalPages: '',
+  });
+
   const [tableShow, setTableShow] = useState(false);
   const [reload, setReload] = useState(false);
   const [snackOpen, setSnackOpen] = useState(false);
@@ -111,15 +116,15 @@ const Announcements = () => {
       }
     }
     if (!tableShow) {
-      handleGetAnnouncements();
+      handleGetAnnouncements(1);
     } else if (tableShow && reload) {
-      handleGetAnnouncements();
+      handleGetAnnouncements(1);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reload]);
 
-  const handleGetAnnouncements = () => {
-    fetch(`${authCtx.baseURL}/api/Announcements`, {
+  const handleGetAnnouncements = (page) => {
+    fetch(`${authCtx.baseURL}/api/Announcements?page=${page}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authCtx.token}`,
@@ -128,12 +133,12 @@ const Announcements = () => {
       .then((res) => res.json())
       .then((resData) => {
         if (resData != null) {
-          response = resData.data.list;
-          pageData = {
+          setPageData({
             count: resData.data.list.length,
             totalPages: resData.data.totalPage,
-            page: resData.data.page,
-          };
+            page: resData.data.page - 1,
+          });
+          response = resData.data.list;
           setTableShow(false);
           setTableShow(true);
           setIdCalled(false);
@@ -164,7 +169,6 @@ const Announcements = () => {
       });
   };
 
-  const handleUpdateClicked = (id, fields) => {};
   const handleAddClicked = (fields) => {
     if (fields.timeTableId.value !== '' && fields.message.value !== '') {
       fetch(`${authCtx.baseURL}/api/Announcements`, {
@@ -201,12 +205,12 @@ const Announcements = () => {
       .then((res) => res.json())
       .then((resData) => {
         if (resData.data != null) {
-          response = [resData.data];
-          pageData = {
+          setPageData({
             count: 1,
-            totalPages: 1,
-            page: 1,
-          };
+            totalPages: 0,
+            page: 0,
+          });
+          response = [resData.data];
           setTableShow(false);
           setTableShow(true);
           setIdCalled(true);
@@ -217,6 +221,10 @@ const Announcements = () => {
       });
   };
 
+  const loadData = (newPage) => {
+    handleGetAnnouncements(newPage);
+  };
+
   return (
     <Fragment>
       <div className={classes.container}>
@@ -225,9 +233,8 @@ const Announcements = () => {
             idCalled={idCalled}
             reloadPage={(data) => setReload(data)}
             response={response}
-            pageCount={pageData.count}
-            pageNum={pageData.page}
-            totalPages={pageData.totalPages}
+            pageData={pageData}
+            loadData={loadData}
             tableHead={tableHead}
             tableTitle=' List'
             showAdd={role === 'admin'}
@@ -236,7 +243,6 @@ const Announcements = () => {
             fields={fields}
             handleDelete={handleDeleteClicked}
             handleAdd={handleAddClicked}
-            handleUpdate={handleUpdateClicked}
             handleGetById={handleById}
             onSetFields={setFields}
             onChange={handleOnChange}

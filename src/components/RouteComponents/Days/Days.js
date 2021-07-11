@@ -7,7 +7,6 @@ import CustomSnackBar from '../../UI/SnackBar';
 import useValidation from '../../../hooks/use-validation';
 
 let response;
-let pageData;
 
 const tableHead = [
   { label: 'ID', align: 'left', addField: [''], addHeader: true },
@@ -49,6 +48,11 @@ const Days = () => {
   const authCtx = useContext(AuthContext);
   const role = authCtx.userRole.toLowerCase();
   const [idCalled, setIdCalled] = useState(false);
+  const [pageData, setPageData] = useState({
+    count: '',
+    page: '',
+    totalPages: '',
+  });
   const [tableShow, setTableShow] = useState(false);
   const [reload, setReload] = useState(false);
   const [snackOpen, setSnackOpen] = useState(false);
@@ -88,15 +92,15 @@ const Days = () => {
       }
     }
     if (!tableShow) {
-      handleGetDays();
+      handleGetDays(1);
     } else if (tableShow && reload) {
-      handleGetDays();
+      handleGetDays(1);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reload]);
 
-  const handleGetDays = () => {
-    fetch(`${authCtx.baseURL}/api/Days`, {
+  const handleGetDays = (page) => {
+    fetch(`${authCtx.baseURL}/api/Days?page=${page}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${authCtx.token}`,
@@ -106,11 +110,11 @@ const Days = () => {
       .then((resData) => {
         if (resData != null) {
           response = resData.data.list;
-          pageData = {
+          setPageData({
             count: resData.data.list.length,
             totalPages: resData.data.totalPage,
-            page: resData.data.page,
-          };
+            page: resData.data.page - 1,
+          });
           setTableShow(false);
           setTableShow(true);
           setIdCalled(false);
@@ -205,11 +209,11 @@ const Days = () => {
       .then((resData) => {
         if (resData.data != null) {
           response = [resData.data];
-          pageData = {
+          setPageData({
             count: 1,
-            totalPages: 1,
-            page: 1,
-          };
+            totalPages: 0,
+            page: 0,
+          });
           setTableShow(false);
           setTableShow(true);
           setIdCalled(true);
@@ -228,9 +232,7 @@ const Days = () => {
             idCalled={idCalled}
             reloadPage={(data) => setReload(data)}
             response={response}
-            pageCount={pageData.count}
-            pageNum={pageData.page}
-            totalPages={pageData.totalPages}
+            pageData={pageData}
             tableHead={tableHead}
             tableTitle='Days List'
             showAdd={role === 'admin'}

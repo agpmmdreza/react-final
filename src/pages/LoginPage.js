@@ -81,6 +81,7 @@ const LoginPage = () => {
   const history = useHistory();
   // const [url, setUrl] = useState('');
   const [fields, setFields] = useState(INITIAL_VALIDATION);
+  const [feedback, setFeedback] = useState('');
   // const [urlField, setUrlField] = useState(false);
 
   // const urlButtonHandler = (event) => {
@@ -144,9 +145,14 @@ const LoginPage = () => {
           const data = resData.data;
           if (data != null) {
             authCtx.login(data.token, data.user.role, data.user, data.expireAt);
-            history.replace('/dashboard');
+            if (data.user.role.toLowerCase() === 'admin') {
+              history.replace('/dashboard/users');
+            } else {
+              history.replace('/dashboard/days');
+            }
           } else {
-            console.log(resData.message);
+            setFeedback(resData.message);
+            // console.log(resData.message);
           }
         });
     }
@@ -164,6 +170,20 @@ const LoginPage = () => {
           <Typography component='h1' variant='h5'>
             Sign in
           </Typography>
+          {feedback !== '' && (
+            <div
+              style={{
+                backgroundColor: '#f9beba',
+                width: '50%',
+                textAlign: 'center',
+                borderRadius: '.5rem',
+                padding: '0.2rem',
+                marginTop: '.7rem',
+              }}
+            >
+              <p style={{ color: '#b91306' }}>{feedback}</p>
+            </div>
+          )}
           <form className={classes.form} noValidate onSubmit={handleFormSubmit}>
             <TextField
               value={fields.userName.value}
@@ -207,18 +227,6 @@ const LoginPage = () => {
             >
               Sign In
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href='#' variant='body2'>
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href='#' variant='body2'>
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
             <Box mt={5}>
               <Copyright />
             </Box>
