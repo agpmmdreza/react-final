@@ -216,7 +216,7 @@ const Users = () => {
   const handleAddClicked = (fields) => {
     const { id, ...rest } = fields;
     if (Object.values(rest).every((item) => item.value !== '')) {
-      fetch(`${authCtx.baseURL}/api/Users`, {
+      fetch(`${authCtx.baseURL}/api/Users/Add`, {
         method: 'POST',
         body: JSON.stringify({
           lastName: fields.lastName.value,
