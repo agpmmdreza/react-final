@@ -31,7 +31,7 @@ const tableHead = [
   {
     label: 'Role',
     align: 'center',
-    addField: ['add'],
+    addField: ['add', 'update'],
     addHeader: true,
   },
   {
