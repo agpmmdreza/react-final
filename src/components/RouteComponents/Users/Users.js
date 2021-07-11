@@ -43,7 +43,7 @@ const tableHead = [
   {
     label: 'Actions',
     align: 'right',
-    addField: [],
+    addField: [''],
     addHeader: true,
   },
 ];

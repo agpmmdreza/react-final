@@ -53,8 +53,6 @@ const CustomTable = (props) => {
   const [openDialog, setOpenDialog] = useState(false);
 
   const handleChangePage = (event, newPage) => {
-    // setPage(newPage);
-    console.log(newPage);
     props.loadData(newPage + 1);
   };
 
@@ -142,8 +140,8 @@ const CustomTable = (props) => {
                         key={index}
                         style={{ display: 'flex', flexDirection: 'row' }}
                       >
-                        {props.tableHead.map(
-                          (rowIn, indexIn) =>
+                        {props.tableHead.map((rowIn, indexIn) => {
+                          return (
                             rowIn.addField.includes('add') && (
                               <div key={indexIn}>
                                 <TextField
@@ -164,7 +162,8 @@ const CustomTable = (props) => {
                                 />
                               </div>
                             )
-                        )}
+                          );
+                        })}
                       </div>
                     );
                   })}
@@ -183,7 +182,7 @@ const CustomTable = (props) => {
                       onClick={() => {
                         props.onSetFieldsGroup((prevState) => [
                           ...prevState,
-                          props.INIT_FIELDS,
+                          props.initialFields,
                         ]);
                       }}
                     >
