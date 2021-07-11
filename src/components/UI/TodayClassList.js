@@ -60,7 +60,7 @@ const TodayClassList = () => {
             <ListItemIcon>
               <InboxIcon style={{ color: '#FF4500' }} />
             </ListItemIcon>
-            <ListItemText primary='Inbox' />
+            <ListItemText primary='Today Classes' />
             {open ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
           <Collapse

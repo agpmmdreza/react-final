@@ -227,14 +227,14 @@ const TimeTable = () => {
     <Fragment>
       <div className={classes.container}>
         <div style={{ marginBottom: '1rem', width: '90%' }}>
-          <Card
-            style={{
-              padding: '.8rem',
-              // alignItems: 'center',
-              backgroundColor: '#ebe9f5',
-            }}
-          >
-            {role !== 'master' && (
+          {role !== 'master' && (
+            <Card
+              style={{
+                padding: '.8rem',
+                // alignItems: 'center',
+                backgroundColor: '#ebe9f5',
+              }}
+            >
               <Fragment>
                 {role === 'student' ? (
                   <Fragment>
@@ -273,8 +273,8 @@ const TimeTable = () => {
                   </Button>
                 )}
               </Fragment>
-            )}
-          </Card>
+            </Card>
+          )}
           <div>
             <Collapse in={openBox} timeout='auto' unmountOnExit>
               <Paper

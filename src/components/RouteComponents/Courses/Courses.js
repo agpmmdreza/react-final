@@ -285,7 +285,6 @@ const Courses = () => {
       })
         .then((res) => res.json())
         .then((resData) => {
-          console.log(resData);
           if (resData != null) {
             if (openBox.source === 'Choose') {
               if (resData.status === 'success') {
@@ -296,18 +295,20 @@ const Courses = () => {
                 setSnackOpen(true);
               }
             } else {
-              response = resData.data.list;
-              setPageData({
-                count: 1,
-                totalPages: 0,
-                page: 0,
-              });
-              setTableHead(
-                openBox.source === 'Masters' ? mastersHead : timeTablesHead
-              );
-              setTableShow(false);
-              setSecTableShow(false);
-              setSecTableShow(true);
+              if (resData.data != null) {
+                response = resData.data.list;
+                setPageData({
+                  count: 1,
+                  totalPages: 0,
+                  page: 0,
+                });
+                setTableHead(
+                  openBox.source === 'Masters' ? mastersHead : timeTablesHead
+                );
+                setTableShow(false);
+                setSecTableShow(false);
+                setSecTableShow(true);
+              }
             }
           } else {
             setResMessage(resData.message);

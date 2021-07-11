@@ -222,6 +222,32 @@ const TimeTableBells = () => {
       });
   };
 
+  const handleUpdate = (id, fields) => {
+    if (fields.bellId.value !== '' && fields.dayId.value !== '' && id !== '') {
+      fetch(`${authCtx.baseURL}/api/TimeTableBells/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          bellId: fields.bellId.value,
+          dayId: fields.dayId.value,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authCtx.token}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((resData) => {
+          if (resData.status === 'success') {
+            setResMessage('Successfully Added!');
+            setReload(true);
+          } else {
+            setResMessage('Something Went Wrong!');
+          }
+          setSnackOpen(true);
+        });
+    }
+  };
+
   return (
     <Fragment>
       <div className={classes.container}>
@@ -240,6 +266,7 @@ const TimeTableBells = () => {
             fields={fields}
             initialFields={INIT_FIELDS}
             handleDelete={handleDeleteClicked}
+            handleUpdate={handleUpdate}
             handleAdd={handleAddClicked}
             handleGetById={handleById}
             onSetFields={setFields}
