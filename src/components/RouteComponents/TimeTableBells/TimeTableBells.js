@@ -18,6 +18,7 @@ const INIT_FIELDS = {
     value: '',
     error: false,
     helper: '',
+    type: 'numerical',
   },
   bellId: {
     value: '',
@@ -173,8 +174,8 @@ const TimeTableBells = () => {
       fetch(`${authCtx.baseURL}/api/TimeTableBells`, {
         method: 'POST',
         body: JSON.stringify({
-          dayId: fields.dayId.value,
           bellId: fields.bellId.value,
+          dayId: fields.dayId.value,
         }),
         headers: {
           'Content-Type': 'application/json',
@@ -183,6 +184,7 @@ const TimeTableBells = () => {
       })
         .then((res) => res.json())
         .then((resData) => {
+          console.log(resData);
           if (resData.status === 'success') {
             setResMessage('Successfully Added!');
             setReload(true);

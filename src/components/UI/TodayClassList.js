@@ -70,8 +70,8 @@ const TodayClassList = () => {
             style={{ maxHeight: '18rem', overflow: 'auto' }}
           >
             <List component='div' disablePadding>
-              {response.map((row) => (
-                <ListItem className={classes.nested}>
+              {response.map((row, index) => (
+                <ListItem className={classes.nested} key={index}>
                   <ListItemAvatar>
                     <Avatar style={{ backgroundColor: '#1C9C24' }}>
                       <ClassIcon style={{ fontSize: '1.3rem' }} />
@@ -79,7 +79,7 @@ const TodayClassList = () => {
                   </ListItemAvatar>
                   <ListItemText
                     primary={row.course}
-                    secondary={`${row.day} + (${row.bell})`}
+                    secondary={`${row.day} (${row.bell})`}
                   />
                 </ListItem>
               ))}
