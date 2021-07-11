@@ -16,6 +16,25 @@ import { CheckCircleOutlineRounded, SearchRounded } from '@material-ui/icons';
 import useValidation from '../../../hooks/use-validation';
 
 let response;
+const INIT_FIELDS = {
+  id: {
+    value: '',
+    error: false,
+    helper: '',
+    type: 'numerical',
+  },
+  title: {
+    value: '',
+    error: false,
+    helper: '',
+  },
+  unitsCount: {
+    value: '',
+    error: false,
+    helper: '',
+    type: 'numerical',
+  },
+};
 
 const timeTablesHead = [
   { label: 'ID', align: 'left', addField: [''], addHeader: true },
@@ -59,11 +78,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     minHeight: '450px',
-    // justifyContent: 'center',
     alignItems: 'center',
   },
   paper: {
-    // padding: '2rem',
     width: '90%',
   },
 }));
@@ -100,25 +117,7 @@ const Courses = () => {
     },
   ]);
   const classes = useStyles();
-  const [fields, setFields] = useState({
-    id: {
-      value: '',
-      error: false,
-      helper: '',
-      type: 'numerical',
-    },
-    title: {
-      value: '',
-      error: false,
-      helper: '',
-    },
-    unitsCount: {
-      value: '',
-      error: false,
-      helper: '',
-      type: 'numerical',
-    },
-  });
+  const [fields, setFields] = useState(INIT_FIELDS);
 
   const { handleOnChange, handleValidation } = useValidation(fields, setFields);
 
@@ -411,6 +410,7 @@ const Courses = () => {
             showActions={role === 'admin'}
             showSearch
             fields={fields}
+            initialFields={INIT_FIELDS}
             handleDelete={handleDeleteClicked}
             handleAdd={handleAddClicked}
             handleUpdate={handleUpdateClicked}

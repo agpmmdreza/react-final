@@ -7,6 +7,25 @@ import CustomSnackBar from '../../UI/SnackBar';
 import useValidation from '../../../hooks/use-validation';
 
 let response;
+const INIT_FIELDS = {
+  id: {
+    value: '',
+    error: false,
+    helper: '',
+    type: 'numerical',
+  },
+  dayOfWeek: {
+    value: '',
+    error: false,
+    helper: '',
+    type: 'numerical',
+  },
+  label: {
+    value: '',
+    error: false,
+    helper: '',
+  },
+};
 
 const tableHead = [
   { label: 'ID', align: 'left', addField: [''], addHeader: true },
@@ -58,25 +77,7 @@ const Days = () => {
   const [snackOpen, setSnackOpen] = useState(false);
   const [resMessage, setResMessage] = useState('');
   const classes = useStyles();
-  const [fields, setFields] = useState({
-    id: {
-      value: '',
-      error: false,
-      helper: '',
-      type: 'numerical',
-    },
-    dayOfWeek: {
-      value: '',
-      error: false,
-      helper: '',
-      type: 'numerical',
-    },
-    label: {
-      value: '',
-      error: false,
-      helper: '',
-    },
-  });
+  const [fields, setFields] = useState(INIT_FIELDS);
 
   const { handleOnChange, handleValidation } = useValidation(fields, setFields);
 
@@ -240,6 +241,7 @@ const Days = () => {
             showEdit={role === 'admin'}
             showSearch
             fields={fields}
+            initialFields={INIT_FIELDS}
             handleDelete={handleDeleteClicked}
             handleAdd={handleAddClicked}
             handleUpdate={handleUpdateClicked}

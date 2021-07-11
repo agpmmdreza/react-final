@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     fontSize: '2rem',
-    margin: '0.5rem',
+    margin: '.4rem .8rem',
     padding: '0.4rem',
     height: '2.5rem',
     width: '2.5rem',
@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     margin: theme.spacing(1),
-    width: '92%',
+    width: '80%',
   },
 }));
 
@@ -175,7 +175,6 @@ const ProfileBar = () => {
               <p
                 style={{
                   margin: 0,
-                  fontFamily: 'sans-serif',
                   color: 'GrayText',
                 }}
               >
@@ -184,7 +183,6 @@ const ProfileBar = () => {
               <p
                 style={{
                   margin: 0,
-                  fontFamily: 'sans-serif',
                   fontWeight: 'bold',
                 }}
               >
@@ -211,7 +209,6 @@ const ProfileBar = () => {
               <p
                 style={{
                   margin: 0,
-                  fontFamily: 'sans-serif',
                   color: 'GrayText',
                 }}
               >
@@ -220,7 +217,6 @@ const ProfileBar = () => {
               <p
                 style={{
                   margin: 0,
-                  fontFamily: 'sans-serif',
                   fontWeight: 'bold',
                 }}
               >
@@ -247,7 +243,6 @@ const ProfileBar = () => {
               <p
                 style={{
                   margin: 0,
-                  fontFamily: 'sans-serif',
                   color: 'GrayText',
                 }}
               >
@@ -256,7 +251,6 @@ const ProfileBar = () => {
               <p
                 style={{
                   margin: 0,
-                  fontFamily: 'sans-serif',
                   fontWeight: 'bold',
                 }}
               >

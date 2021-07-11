@@ -7,6 +7,31 @@ import CustomSnackBar from '../../UI/SnackBar';
 import useValidation from '../../../hooks/use-validation';
 
 let response;
+const INIT_FIELDS = {
+  id: {
+    value: '',
+    error: false,
+    helper: '',
+    type: 'numerical',
+  },
+  dayId: {
+    value: '',
+    error: false,
+    helper: '',
+  },
+  timeTableId: {
+    value: '',
+    error: false,
+    helper: '',
+    type: 'numerical',
+  },
+  bellId: {
+    value: '',
+    error: false,
+    helper: '',
+    type: 'numerical',
+  },
+};
 
 const tableHead = [
   { label: 'ID', align: 'left', addField: [''], addHeader: true },
@@ -86,31 +111,7 @@ const TimeTableBells = () => {
   const [snackOpen, setSnackOpen] = useState(false);
   const [resMessage, setResMessage] = useState('');
   const classes = useStyles();
-  const [fields, setFields] = useState({
-    id: {
-      value: '',
-      error: false,
-      helper: '',
-      type: 'numerical',
-    },
-    dayId: {
-      value: '',
-      error: false,
-      helper: '',
-    },
-    timeTableId: {
-      value: '',
-      error: false,
-      helper: '',
-      type: 'numerical',
-    },
-    bellId: {
-      value: '',
-      error: false,
-      helper: '',
-      type: 'numerical',
-    },
-  });
+  const [fields, setFields] = useState(INIT_FIELDS);
 
   const { handleOnChange, handleValidation } = useValidation(fields, setFields);
 
@@ -252,6 +253,7 @@ const TimeTableBells = () => {
             showEdit={role === 'master'}
             showSearch
             fields={fields}
+            initialFields={INIT_FIELDS}
             handleDelete={handleDeleteClicked}
             handleAdd={handleAddClicked}
             handleGetById={handleById}

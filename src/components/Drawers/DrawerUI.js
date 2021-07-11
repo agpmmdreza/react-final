@@ -168,7 +168,14 @@ const DrawerUI = () => {
             >
               <div style={{ textAlign: 'center' }}>
                 {item.icon}
-                <p style={{ margin: 0, fontSize: '0.6rem' }}>{item.label}</p>
+                <p
+                  style={{
+                    margin: 0,
+                    fontSize: '0.8rem',
+                  }}
+                >
+                  {item.label}
+                </p>
               </div>
             </ListItem>
           );

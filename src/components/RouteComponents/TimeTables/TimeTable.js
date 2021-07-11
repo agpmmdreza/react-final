@@ -9,6 +9,14 @@ import { CheckCircleRounded } from '@material-ui/icons';
 import useValidation from '../../../hooks/use-validation';
 
 let response;
+const INIT_FIELDS = {
+  id: {
+    value: '',
+    error: false,
+    helper: '',
+    type: 'numerical',
+  },
+};
 
 const tableHead = [
   { label: 'ID', align: 'left', addField: [''], addHeader: true },
@@ -71,14 +79,7 @@ const TimeTable = () => {
   const [snackOpen, setSnackOpen] = useState(false);
   const [resMessage, setResMessage] = useState('');
   const classes = useStyles();
-  const [fields, setFields] = useState({
-    id: {
-      value: '',
-      error: false,
-      helper: '',
-      type: 'numerical',
-    },
-  });
+  const [fields, setFields] = useState(INIT_FIELDS);
 
   const { handleOnChange, handleValidation } = useValidation(fields, setFields);
   useEffect(() => {
@@ -313,6 +314,7 @@ const TimeTable = () => {
             tableHead={tableHead}
             tableTitle='Time Tables List'
             fields={fields}
+            initialFields={INIT_FIELDS}
             showSearch
             handleGetById={handleById}
             onSetFields={setFields}

@@ -2,17 +2,16 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import React, { useContext, Suspense } from 'react';
 import AuthContext from './store/auth-context';
-// import SignInPage from './pages/SignInPage';
-import Dashboard from './components/Dashboards/Dashboard';
 import LoginPage from './pages/LoginPage';
-// const Dashboard = React.lazy(() => import('./components/Dashboards/Dashboard'));
+const Dashboard = React.lazy(() => import('./components/Dashboards/Dashboard'));
 
 const theme = createMuiTheme({
   palette: {
     type: 'light',
   },
   typography: {
-    fontFamily: ['Roboto', 'sans-serif'].join(','),
+    // fontFamily: ['Roboto', 'sans-serif'].join(','),
+    fontFamily: ['Shabnam', 'sans-serif'].join(','),
   },
 });
 

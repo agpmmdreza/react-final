@@ -183,7 +183,7 @@ const CustomTable = (props) => {
                       onClick={() => {
                         props.onSetFieldsGroup((prevState) => [
                           ...prevState,
-                          props.INIT_BODY,
+                          props.INIT_FIELDS,
                         ]);
                       }}
                     >
@@ -243,6 +243,7 @@ const CustomTable = (props) => {
                     style={{ marginLeft: 'auto', marginRight: '1rem' }}
                     onClick={() => {
                       props.handleAdd(props.fields);
+                      props.onSetFields(props.initialFields);
                     }}
                   >
                     Add
@@ -484,6 +485,7 @@ const CustomTable = (props) => {
                                           row.id,
                                           props.fields
                                         );
+                                        props.onSetFields(props.initialFields);
                                       }}
                                     >
                                       Update

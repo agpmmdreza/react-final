@@ -54,18 +54,34 @@ const useStyles = makeStyles((theme) => ({
     width: 'auto',
     justifyContent: 'center',
   },
-
   paper: {
-    // padding: '2rem',
     width: '90%',
   },
-  table: {
-    // minWidth: '30vw',
-  },
+  table: {},
   inner: {
     width: '250px',
   },
 }));
+
+const INIT_FIELDS = {
+  id: {
+    value: '',
+    error: false,
+    helper: '',
+    type: 'numerical',
+  },
+  message: {
+    value: '',
+    error: false,
+    helper: '',
+  },
+  timeTableId: {
+    value: '',
+    error: false,
+    helper: '',
+    type: 'numerical',
+  },
+};
 
 const Announcements = () => {
   const authCtx = useContext(AuthContext);
@@ -76,31 +92,12 @@ const Announcements = () => {
     page: '',
     totalPages: '',
   });
-
   const [tableShow, setTableShow] = useState(false);
   const [reload, setReload] = useState(false);
   const [snackOpen, setSnackOpen] = useState(false);
   const [resMessage, setResMessage] = useState('');
+  const [fields, setFields] = useState(INIT_FIELDS);
   const classes = useStyles();
-  const [fields, setFields] = useState({
-    id: {
-      value: '',
-      error: false,
-      helper: '',
-      type: 'numerical',
-    },
-    message: {
-      value: '',
-      error: false,
-      helper: '',
-    },
-    timeTableId: {
-      value: '',
-      error: false,
-      helper: '',
-      type: 'numerical',
-    },
-  });
 
   const { handleOnChange, handleValidation } = useValidation(fields, setFields);
 
@@ -241,6 +238,7 @@ const Announcements = () => {
             showActions={role === 'admin'}
             showSearch
             fields={fields}
+            initialFields={INIT_FIELDS}
             handleDelete={handleDeleteClicked}
             handleAdd={handleAddClicked}
             handleGetById={handleById}

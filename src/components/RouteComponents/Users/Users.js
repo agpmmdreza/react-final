@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const INIT_BODY = {
+const INIT_FIELDS = {
   id: {
     value: '',
     error: false,
@@ -112,13 +112,12 @@ const Users = () => {
     page: '',
     totalPages: '',
   });
-
   const [tableShow, setTableShow] = useState(false);
   const [reload, setReload] = useState(false);
   const [snackOpen, setSnackOpen] = useState(false);
   const [resMessage, setResMessage] = useState('');
-  const [fields, setFields] = useState(INIT_BODY);
-  const [groupFields, setGroupFields] = useState([INIT_BODY]);
+  const [fields, setFields] = useState(INIT_FIELDS);
+  const [groupFields, setGroupFields] = useState([INIT_FIELDS]);
   const classes = useStyles();
 
   const { handleOnChange, handleValidation } = useValidation(fields, setFields);
@@ -264,7 +263,7 @@ const Users = () => {
       .then((resData) => {
         if (resData.status === 'success') {
           setResMessage('Successfully Added!');
-          setGroupFields([INIT_BODY]);
+          setGroupFields([INIT_FIELDS]);
           setReload(true);
         } else {
           setResMessage('Something Went Wrong!');
@@ -324,7 +323,7 @@ const Users = () => {
             showAddByGroup
             fields={fields}
             groupFields={groupFields}
-            INIT_BODY={INIT_BODY}
+            initialFields={INIT_FIELDS}
             handleDelete={handleDeleteClicked}
             handleAdd={handleAddClicked}
             handleAddGroup={handleAddGroupClicked}
