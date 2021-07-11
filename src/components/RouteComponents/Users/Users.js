@@ -184,9 +184,6 @@ const Users = () => {
         body: JSON.stringify({
           firstName: fields.firstName.value,
           lastName: fields.lastName.value,
-          password: fields.password.value,
-          role: fields.role.value,
-          code: fields.code.value,
         }),
         headers: {
           'Content-Type': 'application/json',
