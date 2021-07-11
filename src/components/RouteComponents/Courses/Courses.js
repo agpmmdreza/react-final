@@ -277,6 +277,7 @@ const Courses = () => {
     console.log(courseId, openBox);
     if (courseId !== '' && !isNaN(courseId)) {
       fetch(`${authCtx.baseURL}/api/Courses/${courseId}/${openBox.source}`, {
+        method: openBox.source === 'Choose' ? 'POST' : 'GET',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${authCtx.token}`,
@@ -285,13 +286,7 @@ const Courses = () => {
         .then((res) => res.json())
         .then((resData) => {
           console.log(resData);
-          if (resData.data != null) {
-            response = resData.data.list;
-            setPageData({
-              count: 1,
-              totalPages: 0,
-              page: 0,
-            });
+          if (resData != null) {
             if (openBox.source === 'Choose') {
               if (resData.status === 'success') {
                 setResMessage('Successfuly Chosen!');
@@ -300,13 +295,20 @@ const Courses = () => {
                 setResMessage(resData.message);
                 setSnackOpen(true);
               }
+            } else {
+              response = resData.data.list;
+              setPageData({
+                count: 1,
+                totalPages: 0,
+                page: 0,
+              });
+              setTableHead(
+                openBox.source === 'Masters' ? mastersHead : timeTablesHead
+              );
+              setTableShow(false);
+              setSecTableShow(false);
+              setSecTableShow(true);
             }
-            setTableHead(
-              openBox.source === 'Masters' ? mastersHead : timeTablesHead
-            );
-            setTableShow(false);
-            setSecTableShow(false);
-            setSecTableShow(true);
           } else {
             setResMessage(resData.message);
             setSnackOpen(true);
@@ -314,6 +316,47 @@ const Courses = () => {
         });
     }
   };
+
+  // const handleChooseCourseId = () => {
+  //   console.log(courseId, openBox);
+  //   if (courseId !== '' && !isNaN(courseId)) {
+  //     fetch(`${authCtx.baseURL}/api/Courses/${courseId}/${openBox.source}`, {
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         Authorization: `Bearer ${authCtx.token}`,
+  //       },
+  //     })
+  //       .then((res) => res.json())
+  //       .then((resData) => {
+  //         if (resData.data != null) {
+  //           response = resData.data.list;
+  //           setPageData({
+  //             count: 1,
+  //             totalPages: 0,
+  //             page: 0,
+  //           });
+  //           if (openBox.source === 'Choose') {
+  //             if (resData.status === 'success') {
+  //               setResMessage('Successfuly Chosen!');
+  //               setSnackOpen(true);
+  //             } else {
+  //               setResMessage(resData.message);
+  //               setSnackOpen(true);
+  //             }
+  //           }
+  //           setTableHead(
+  //             openBox.source === 'Masters' ? mastersHead : timeTablesHead
+  //           );
+  //           setTableShow(false);
+  //           setSecTableShow(false);
+  //           setSecTableShow(true);
+  //         } else {
+  //           setResMessage(resData.message);
+  //           setSnackOpen(true);
+  //         }
+  //       });
+  //   }
+  // };
 
   return (
     <Fragment>
@@ -325,7 +368,7 @@ const Courses = () => {
                 style={{ marginRight: '.5rem' }}
                 onClick={() =>
                   setOpenBox((prevState) => ({
-                    source: 'choose',
+                    source: 'Choose',
                     value: !prevState.value,
                   }))
                 }
