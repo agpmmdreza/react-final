@@ -159,12 +159,12 @@ const Courses = () => {
       .then((res) => res.json())
       .then((resData) => {
         if (resData != null) {
-          response = resData.data.list;
           setPageData({
             count: resData.data.list.length,
             totalPages: resData.data.totalPage,
             page: resData.data.page - 1,
           });
+          response = resData.data.list;
           setTableShow(false);
           setTableShow(true);
           setIdCalled(false);
@@ -287,9 +287,9 @@ const Courses = () => {
           if (resData.data != null) {
             response = resData.data.list;
             setPageData({
-              count: resData.data.list.length,
-              totalPages: resData.data.totalPage,
-              page: resData.data.page,
+              count: 1,
+              totalPages: 0,
+              page: 0,
             });
             if (openBox.source === 'Choose') {
               if (resData.status === 'success') {
@@ -332,7 +332,6 @@ const Courses = () => {
                 Choose Course
               </Button>
             )}
-
             <Button
               variant='outlined'
               color='secondary'
@@ -389,12 +388,7 @@ const Courses = () => {
             <CustomTable
               reloadPage={(data) => setReload(data)}
               response={response}
-              pageCount={pageData.count}
-              pageNum={pageData.page}
-              totalPages={pageData.totalPages}
-              // tableHead={
-              //   openBox.value === 'timetables' ? timeTablesHead : mastersHead
-              // }
+              pageData={pageData}
               tableHead={tableHead}
               tableTitle='Courses List'
             />

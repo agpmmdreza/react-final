@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { List, ListItem } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import GroupOutlinedIcon from '@material-ui/icons/GroupOutlined';
 import TodayOutlinedIcon from '@material-ui/icons/TodayOutlined';
 import NotificationsNoneOutlinedIcon from '@material-ui/icons/NotificationsNoneOutlined';
@@ -125,11 +125,12 @@ const studentDrawer = [
 ];
 
 const DrawerUI = () => {
-  const [selected, setSelected] = useState(0);
-  const classes = useStyles();
-  let content;
   const authCtx = useContext(AuthContext);
   const role = authCtx.userRole.toLowerCase();
+  const location = useLocation();
+  const classes = useStyles();
+  let content;
+
   if (role === 'admin') {
     content = adminDrawer;
   } else if (role === 'master') {
@@ -137,6 +138,16 @@ const DrawerUI = () => {
   } else {
     content = studentDrawer;
   }
+
+  let selectedIndex;
+  content.forEach((row, index) => {
+    if (row.path === location.pathname.toLowerCase()) {
+      selectedIndex = index;
+    } else {
+      selectedIndex = null;
+    }
+  });
+  const [selected, setSelected] = useState(selectedIndex);
 
   return (
     <div className={classes.list}>
