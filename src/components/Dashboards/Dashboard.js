@@ -23,16 +23,12 @@ const useStyles = makeStyles((theme) => ({
     },
     '&::-webkit-scrollbar-thumb': {
       backgroundColor: '#bdc3c7',
-      // outline: '1px solid slategrey',
       WebkitBorderRadius: '1rem',
       borderRadius: '1rem',
       transition: '0.3s',
     },
     '&::-webkit-scrollbar-thumb:hover': {
       backgroundColor: '#7f8c8d',
-      // outline: '1px solid slategrey',
-      // WebkitBorderRadius: '1rem',
-      // borderRadius: '1rem',
     },
   },
 }));
