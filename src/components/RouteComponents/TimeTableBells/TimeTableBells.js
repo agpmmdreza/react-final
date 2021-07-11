@@ -169,11 +169,7 @@ const TimeTableBells = () => {
   };
 
   const handleAddClicked = (fields) => {
-    if (
-      fields.timeTableId.value !== '' &&
-      fields.bellId.value !== '' &&
-      fields.dayId.value !== ''
-    ) {
+    if (fields.bellId.value !== '' && fields.dayId.value !== '') {
       fetch(`${authCtx.baseURL}/api/TimeTableBells`, {
         method: 'POST',
         body: JSON.stringify({
