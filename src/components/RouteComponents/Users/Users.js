@@ -25,7 +25,7 @@ const tableHead = [
   {
     label: 'Code',
     align: 'center',
-    addField: ['add'],
+    addField: ['add', 'update'],
     addHeader: true,
   },
   {
@@ -37,7 +37,7 @@ const tableHead = [
   {
     label: 'Password',
     align: 'center',
-    addField: ['add'],
+    addField: ['add', 'update'],
     addHeader: false,
   },
   {
@@ -184,6 +184,9 @@ const Users = () => {
         body: JSON.stringify({
           firstName: fields.firstName.value,
           lastName: fields.lastName.value,
+          password: fields.password.value,
+          role: fields.role.value,
+          code: fields.code.value,
         }),
         headers: {
           'Content-Type': 'application/json',
