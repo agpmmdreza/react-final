@@ -25,19 +25,19 @@ const tableHead = [
   {
     label: 'Code',
     align: 'center',
-    addField: ['add', 'update'],
+    addField: ['add'],
     addHeader: true,
   },
   {
     label: 'Role',
     align: 'center',
-    addField: ['add', 'update'],
+    addField: ['add'],
     addHeader: true,
   },
   {
     label: 'Password',
     align: 'center',
-    addField: ['add', 'update'],
+    addField: ['add'],
     addHeader: false,
   },
   {
@@ -55,13 +55,8 @@ const useStyles = makeStyles((theme) => ({
     width: 'auto',
     justifyContent: 'center',
   },
-
   paper: {
-    // padding: '2rem',
     width: '90%',
-  },
-  table: {
-    // minWidth: '30vw',
   },
   inner: {
     width: '250px',
