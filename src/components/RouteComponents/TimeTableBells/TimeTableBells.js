@@ -19,12 +19,6 @@ const INIT_FIELDS = {
     error: false,
     helper: '',
   },
-  timeTableId: {
-    value: '',
-    error: false,
-    helper: '',
-    type: 'numerical',
-  },
   bellId: {
     value: '',
     error: false,
@@ -65,12 +59,6 @@ const tableHead = [
   },
   {
     label: 'Bell Id',
-    align: 'center',
-    addField: ['add'],
-    addHeader: false,
-  },
-  {
-    label: 'Time Table Id',
     align: 'center',
     addField: ['add'],
     addHeader: false,
@@ -191,7 +179,6 @@ const TimeTableBells = () => {
         body: JSON.stringify({
           dayId: fields.dayId.value,
           bellId: fields.bellId.value,
-          timeTableId: fields.timeTableId.value,
         }),
         headers: {
           'Content-Type': 'application/json',
